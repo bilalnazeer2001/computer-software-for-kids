@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 1: Computer Software — Interactive Journey 🚀</title>
+<style>
+  :root{
+    --bg-deep:#05040c; --bg-mid:#0b0a1c;
+    --glass:rgba(255,255,255,.05); --glass-strong:rgba(255,255,255,.09);
+    --border:rgba(255,255,255,.14); --ink:#eef2ff; --muted:#9aa3c7;
+    --cyan:#22d3ee; --violet:#c084fc; --rose:#fb7185; --amber:#ffb347; --emerald:#34d399;
+    --danger:#ff4d6d; --ok:#34d399;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    min-height:100vh; color:var(--ink);
+    font-family:'Segoe UI',Verdana,Arial,sans-serif;
+    background:
+      radial-gradient(ellipse 900px 500px at 12% -5%, rgba(192,132,252,.16), transparent 60%),
+      radial-gradient(ellipse 900px 600px at 88% 8%, rgba(34,211,238,.14), transparent 60%),
+      linear-gradient(180deg,var(--bg-deep),var(--bg-mid) 40%,var(--bg-deep));
+    position:relative; overflow-x:hidden;
+  }
+  .bg-grid{
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+    background-size:42px 42px;
+    mask-image:radial-gradient(ellipse 80% 70% at 50% 25%, black 40%, transparent 85%);
+    animation:gridDrift 26s linear infinite;
+  }
+  @keyframes gridDrift{ from{background-position:0 0,0 0;} to{background-position:42px 84px,84px 42px;} }
+
+  a{ color:inherit; }
+  h1,h2,h3{ margin:0; }
+
+  /* ---------- top bar ---------- */
+  header{ position:relative; z-index:3; text-align:center; padding:26px 16px 8px; }
+  .kicker{ font-size:.72rem; letter-spacing:3px; color:var(--muted); text-transform:uppercase; }
+  h1.title{
+    font-size:clamp(1.35rem,3.6vw,2.2rem); font-weight:800; margin-top:6px;
+    background:linear-gradient(90deg,#7dd3fc,#c084fc 45%,#fb7185 90%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    text-shadow:0 0 40px rgba(192,132,252,.25);
+  }
+
+  nav{
+    position:sticky; top:0; z-index:20; margin-top:14px;
+    display:flex; flex-wrap:wrap; gap:8px; justify-content:center;
+    padding:12px 12px; backdrop-filter:blur(12px);
+    background:linear-gradient(180deg,rgba(8,7,20,.85),rgba(8,7,20,.5));
+    border-bottom:1px solid var(--border);
+  }
+  .tab{
+    border:1px solid var(--border); background:var(--glass); color:var(--muted);
+    padding:8px 14px; border-radius:999px; font-size:.8rem; font-weight:700;
+    cursor:pointer; transition:all .25s; white-space:nowrap;
+  }
+  .tab:hover{ color:#dbe4ff; border-color:rgba(125,211,252,.5); }
+  .tab.active{
+    color:#0a0e1a; border-color:transparent;
+    background:linear-gradient(90deg,#7dd3fc,#c084fc);
+    box-shadow:0 0 18px rgba(192,132,252,.5);
+  }
+
+  main{ position:relative; z-index:2; max-width:1000px; margin:0 auto; padding:26px 18px 80px; }
+  .view{ display:none; animation:fadeUp .5s ease; }
+  .view.active{ display:block; }
+  @keyframes fadeUp{ from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:none;} }
+
+  .section-head{ text-align:center; margin-bottom:22px; }
+  .section-head h2{ font-size:clamp(1.2rem,3vw,1.7rem); font-weight:800; }
+  .section-head p{ color:var(--muted); max-width:640px; margin:8px auto 0; font-size:clamp(.82rem,2vw,.95rem); line-height:1.55; }
+
+  .card{
+    background:linear-gradient(165deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+    border:1px solid var(--border); border-radius:18px; padding:20px;
+    box-shadow:0 20px 40px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06);
+    backdrop-filter:blur(8px);
+  }
+  .grid{ display:grid; gap:16px; }
+  .g2{ grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); }
+  .g3{ grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); }
+
+  .pill{ display:inline-block; font-size:.68rem; font-weight:700; padding:3px 10px; border-radius:999px;
+    background:var(--glass-strong); border:1px solid var(--border); color:#cdd6ff; margin:3px 4px 0 0; }
+
+  .btn{
+    border:1px solid var(--border); background:var(--glass-strong); color:var(--ink);
+    padding:9px 16px; border-radius:12px; font-weight:700; cursor:pointer; font-size:.85rem;
+    transition:all .2s;
+  }
+  .btn:hover{ border-color:rgba(125,211,252,.6); box-shadow:0 0 12px rgba(125,211,252,.4); }
+  .btn.primary{ background:linear-gradient(90deg,#7dd3fc,#c084fc); color:#0a0e1a; border-color:transparent; }
+
+  /* ---------- HERO / intro ---------- */
+  .hero{ text-align:center; }
+  .vs-wrap{ display:grid; grid-template-columns:1fr auto 1fr; gap:14px; align-items:center; margin-top:10px; }
+  .vs-box{ padding:22px 16px; border-radius:16px; }
+  .vs-box .big{ font-size:2.4rem; }
+  .vs-box h3{ font-size:1.05rem; margin:8px 0 6px; }
+  .vs-box p{ color:var(--muted); font-size:.82rem; line-height:1.5; }
+  .vs-hw{ border:1px solid rgba(255,179,71,.4); background:linear-gradient(165deg,rgba(255,179,71,.12),transparent); }
+  .vs-sw{ border:1px solid rgba(34,211,238,.4); background:linear-gradient(165deg,rgba(34,211,238,.12),transparent); }
+  .vs-mid{ font-size:1.4rem; color:var(--muted); font-weight:800; }
+  .branch{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-top:20px; }
+  .branch .card{ flex:1 1 240px; max-width:340px; text-align:left; }
+  .machine-lang{ font-family:'Consolas',monospace; letter-spacing:2px; color:#7dd3fc; }
+
+  /* ---------- SIMULATION (reused) ---------- */
+  .monitor-deck{ display:flex; justify-content:center; }
+  .monitor{ width:min(560px,100%); padding:16px; border-radius:22px;
+    background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02));
+    border:1px solid var(--border); box-shadow:0 30px 60px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.08);
+    backdrop-filter:blur(10px); }
+  .screen{ position:relative; height:140px; border-radius:12px; overflow:hidden;
+    background:radial-gradient(ellipse at 50% 30%,#101a2e 0%,#060915 75%);
+    border:1px solid rgba(125,211,252,.25); box-shadow:inset 0 0 40px rgba(34,211,238,.12);
+    display:flex; align-items:center; justify-content:center; transition:box-shadow .35s; }
+  .screen.screen-active{ box-shadow:inset 0 0 55px rgba(34,211,238,.45),0 0 30px rgba(34,211,238,.35); }
+  .screen::before{ content:""; position:absolute; inset:0; pointer-events:none;
+    background:repeating-linear-gradient(0deg,rgba(255,255,255,.05) 0 1px,transparent 1px 3px);
+    animation:scan 6s linear infinite; opacity:.5; }
+  @keyframes scan{ from{background-position-y:0;} to{background-position-y:300px;} }
+  .screen-content{ font-family:'Consolas',monospace; font-size:clamp(1.2rem,4vw,1.8rem);
+    color:#7dd3fc; text-shadow:0 0 10px rgba(125,211,252,.8); letter-spacing:3px; z-index:1;
+    text-align:center; padding:0 14px; word-break:break-all; }
+  .cursor{ animation:blink 1s step-start infinite; }
+  @keyframes blink{ 50%{opacity:0;} }
+  .mouse-flash{ position:absolute; inset:0; z-index:2; display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(ellipse at 50% 30%,#101a2e 0%,#060915 75%);
+    font-family:'Consolas',monospace; font-size:clamp(1rem,3.4vw,1.4rem);
+    color:#a7f3d0; text-shadow:0 0 10px rgba(167,243,208,.8); opacity:0; transition:opacity .3s; pointer-events:none; }
+  .mouse-flash.show{ opacity:1; }
+
+  .step-track{ display:flex; justify-content:center; gap:8px; flex-wrap:wrap; margin:20px 0; }
+  .step-pill{ font-size:.68rem; padding:5px 12px; border-radius:999px; border:1px solid var(--border);
+    color:var(--muted); background:var(--glass); transition:all .3s; }
+  .step-pill.active{ color:#0a0e1a; background:linear-gradient(90deg,#7dd3fc,#c084fc); border-color:transparent; box-shadow:0 0 16px rgba(192,132,252,.6); }
+  .step-pill.done{ color:#0a0e1a; background:linear-gradient(90deg,#34d399,#22d3ee); border-color:transparent; }
+  .step-pill.fail{ color:#0a0e1a; background:linear-gradient(90deg,#ff4d6d,#ff8080); border-color:transparent; }
+
+  .circuit-core{ position:relative; border-radius:22px; padding:34px 20px 26px;
+    background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.015));
+    border:1px solid var(--border); box-shadow:0 30px 60px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.06);
+    backdrop-filter:blur(8px); overflow:hidden; margin-bottom:22px; }
+  .circuit-core::before{ content:""; position:absolute; inset:0; opacity:.5; pointer-events:none;
+    background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1.4px); background-size:26px 26px; }
+  .trace-svg{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:1; }
+  .nodes-row{ position:relative; z-index:2; display:flex; flex-wrap:wrap; gap:16px; justify-content:space-between; }
+  .node{ --accent:#7dd3fc; flex:1 1 150px; max-width:190px; text-align:center; padding:14px 10px 12px; border-radius:16px;
+    background:linear-gradient(165deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+    border:1px solid color-mix(in srgb,var(--accent) 45%,var(--border));
+    box-shadow:0 10px 24px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.08);
+    transition:box-shadow .3s,border-color .3s,opacity .3s,filter .3s,transform .3s; }
+  .node .node-icon{ font-size:1.7rem; display:inline-flex; align-items:center; justify-content:center;
+    width:44px; height:44px; border-radius:50%; background:color-mix(in srgb,var(--accent) 20%,transparent);
+    box-shadow:0 0 18px color-mix(in srgb,var(--accent) 55%,transparent); margin-bottom:6px; }
+  .node-title{ font-weight:800; font-size:.82rem; color:#fff; }
+  .node-sub{ font-size:.6rem; color:var(--muted); margin:2px 0 8px; line-height:1.35; min-height:26px; }
+  .node-status{ font-size:.6rem; font-weight:800; letter-spacing:1.5px; margin-top:7px; }
+  .status-on{ color:var(--accent); text-shadow:0 0 10px color-mix(in srgb,var(--accent) 70%,transparent); }
+  .status-off{ color:#6b7280; }
+  .node.node-off{ opacity:.5; filter:grayscale(.5); }
+  .node.node-success{ border-color:var(--accent);
+    box-shadow:0 0 26px color-mix(in srgb,var(--accent) 75%,transparent),0 0 55px color-mix(in srgb,var(--accent) 35%,transparent);
+    transform:translateY(-3px) scale(1.03); }
+  .node.node-fail{ border-color:var(--danger); animation:flashRed .28s ease-in-out 3; }
+  @keyframes flashRed{ 0%,100%{box-shadow:0 0 12px var(--danger);} 50%{box-shadow:0 0 34px var(--danger),0 0 60px rgba(255,77,109,.6);} }
+  .badge-ok{ display:inline-block; margin-top:4px; font-size:.6rem; font-weight:800; color:#04120b;
+    background:var(--ok); border-radius:999px; padding:1px 8px; opacity:0; transform:scale(.6); transition:all .25s; }
+  .node-success .badge-ok{ opacity:1; transform:scale(1); }
+
+  .switch{ position:relative; display:inline-block; width:42px; height:22px; }
+  .switch input{ opacity:0; width:0; height:0; }
+  .slider{ position:absolute; inset:0; cursor:pointer; border-radius:22px; background:rgba(255,255,255,.12);
+    box-shadow:inset 0 0 4px rgba(0,0,0,.5); transition:.3s; }
+  .slider::before{ content:""; position:absolute; height:16px; width:16px; left:3px; bottom:3px;
+    background:#e7ecff; border-radius:50%; transition:.3s; }
+  .node input:checked + .slider{ background:linear-gradient(90deg,var(--accent),color-mix(in srgb,var(--accent) 60%,white));
+    box-shadow:0 0 10px color-mix(in srgb,var(--accent) 80%,transparent); }
+  .node input:checked + .slider::before{ transform:translateX(20px); }
+
+  .packet{ position:fixed; width:16px; height:16px; border-radius:50%;
+    background:radial-gradient(circle,#fff 0%,#7dd3fc 55%,transparent 100%);
+    box-shadow:0 0 10px 5px rgba(125,211,252,.9),0 0 26px 10px rgba(125,211,252,.4);
+    opacity:0; z-index:999; pointer-events:none;
+    transition:left .78s cubic-bezier(.4,0,.2,1),top .78s cubic-bezier(.4,0,.2,1),background .25s,box-shadow .25s; }
+  .packet.packet-fail{ background:radial-gradient(circle,#fff 0%,var(--danger) 55%,transparent 100%);
+    box-shadow:0 0 12px 6px rgba(255,77,109,.9),0 0 28px 12px rgba(255,77,109,.4); }
+
+  .input-deck{ display:flex; flex-wrap:wrap; gap:26px; justify-content:center; align-items:flex-start; }
+  .keyboard{ --ku:30px; max-width:100%; overflow-x:auto; padding:14px; border-radius:16px; display:flex; flex-direction:column; gap:6px;
+    background:linear-gradient(165deg,rgba(255,255,255,.07),rgba(255,255,255,.02));
+    border:1px solid var(--border); box-shadow:0 20px 40px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.06); }
+  .key-row{ display:flex; gap:6px; justify-content:center; }
+  .key{ flex:0 0 auto; width:var(--ku); height:var(--ku); border-radius:7px; border:1px solid rgba(255,255,255,.1);
+    background:linear-gradient(165deg,rgba(255,255,255,.1),rgba(255,255,255,.02));
+    color:#dfe6ff; font-weight:700; font-size:calc(var(--ku)*.4); cursor:pointer;
+    box-shadow:0 3px 0 rgba(0,0,0,.4); transition:box-shadow .15s,transform .08s,color .15s,border-color .15s; }
+  .key.k15{ width:calc(var(--ku)*1.5); } .key.k18{ width:calc(var(--ku)*2); }
+  .key.k2{ width:calc(var(--ku)*2.3); } .key.kspace{ width:calc(var(--ku)*8); }
+  .key:hover:not(:disabled){ border-color:rgba(125,211,252,.6); color:#7dd3fc; box-shadow:0 3px 0 rgba(0,0,0,.4),0 0 10px rgba(125,211,252,.5); }
+  .key:active:not(:disabled){ transform:translateY(3px); box-shadow:0 0 8px rgba(125,211,252,.6); }
+  .key.press{ transform:translateY(2px); background:rgba(125,211,252,.4); color:#04121b; box-shadow:0 0 10px rgba(125,211,252,.6); }
+  .key:disabled{ opacity:.35; cursor:not-allowed; }
+  .mouse-wrap{ display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .mouse{ position:relative; width:88px; height:132px; border-radius:44px 44px 18px 18px;
+    background:linear-gradient(165deg,rgba(255,255,255,.12),rgba(255,255,255,.03));
+    border:1px solid var(--border); box-shadow:0 18px 36px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.08); }
+  .mouse::after{ content:""; position:absolute; inset:-6px; border-radius:50px; z-index:-1;
+    background:radial-gradient(ellipse at 50% 40%,rgba(125,211,252,.28),transparent 70%);
+    filter:blur(10px); opacity:.7; }
+  .mouse-btn{ position:absolute; top:0; width:43px; height:54px; cursor:pointer; transition:background .15s; }
+  .mouse-btn-left{ left:0; border-radius:44px 0 0 0; border-right:1px solid rgba(255,255,255,.08); }
+  .mouse-btn-right{ right:0; border-radius:0 44px 0 0; }
+  .mouse-btn-left:hover:not(.disabled){ background:rgba(125,211,252,.25); }
+  .mouse-btn-left:active:not(.disabled){ background:rgba(125,211,252,.5); }
+  .mouse-btn.disabled{ cursor:not-allowed; }
+  .mouse-wheel{ position:absolute; top:14px; left:50%; transform:translateX(-50%); width:9px; height:24px; border-radius:5px; background:rgba(0,0,0,.5); }
+  .mouse-label{ font-size:.68rem; color:var(--muted); }
+
+  .console-panel{ display:flex; align-items:flex-start; gap:12px; padding:16px 18px; border-radius:16px; min-height:30px; margin-top:22px;
+    background:linear-gradient(165deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+    border:1px solid rgba(125,211,252,.35); box-shadow:0 0 30px rgba(34,211,238,.1),inset 0 1px 0 rgba(255,255,255,.06);
+    font-size:clamp(.82rem,2.1vw,.95rem); line-height:1.55; transition:border-color .3s,box-shadow .3s; }
+  .console-panel.error{ border-color:rgba(255,77,109,.6); box-shadow:0 0 30px rgba(255,77,109,.18); }
+  .console-panel.success{ border-color:rgba(52,211,153,.6); box-shadow:0 0 30px rgba(52,211,153,.18); }
+  .led{ flex:0 0 auto; width:10px; height:10px; border-radius:50%; margin-top:5px; background:var(--cyan);
+    box-shadow:0 0 10px var(--cyan); animation:pulse 1.4s ease-in-out infinite; }
+  .console-panel.error .led{ background:var(--danger); box-shadow:0 0 10px var(--danger); }
+  .console-panel.success .led{ background:var(--ok); box-shadow:0 0 10px var(--ok); }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.35;} }
+  .shake{ animation:shakeBoard .5s; }
+  @keyframes shakeBoard{ 10%,90%{transform:translateX(-2px);} 20%,80%{transform:translateX(4px);} 30%,50%,70%{transform:translateX(-8px);} 40%,60%{transform:translateX(8px);} }
+
+  /* ---------- deep-dive type cards ---------- */
+  .type-card{ --accent:#7dd3fc; text-align:left; position:relative; overflow:hidden; }
+  .type-card::before{ content:""; position:absolute; top:0; left:0; right:0; height:4px; background:var(--accent); box-shadow:0 0 16px var(--accent); }
+  .type-head{ display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+  .type-icon{ font-size:1.6rem; width:48px; height:48px; border-radius:14px; display:flex; align-items:center; justify-content:center;
+    background:color-mix(in srgb,var(--accent) 18%,transparent); box-shadow:0 0 18px color-mix(in srgb,var(--accent) 45%,transparent); }
+  .type-head h3{ font-size:1.05rem; }
+  .type-head .tag{ font-size:.62rem; color:var(--accent); letter-spacing:1px; text-transform:uppercase; }
+  .type-card p{ color:#c7cfe8; font-size:.84rem; line-height:1.55; margin:0 0 10px; }
+  .type-card .label{ font-size:.66rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:2px; }
+
+  /* ---------- app software demos ---------- */
+  .demo-tabs{ display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:16px; }
+  .demo-tab{ border:1px solid var(--border); background:var(--glass); color:var(--muted); padding:7px 14px; border-radius:12px; font-weight:700; font-size:.8rem; cursor:pointer; transition:all .2s; }
+  .demo-tab.active{ color:#0a0e1a; background:linear-gradient(90deg,#34d399,#22d3ee); border-color:transparent; }
+  .demo-pane{ display:none; }
+  .demo-pane.active{ display:block; }
+  .doc-toolbar{ display:flex; gap:6px; margin-bottom:10px; flex-wrap:wrap; }
+  .doc-toolbar button{ width:34px; height:34px; border-radius:8px; border:1px solid var(--border); background:var(--glass-strong); color:var(--ink); cursor:pointer; font-weight:800; }
+  .doc-toolbar button:hover{ border-color:rgba(52,211,153,.6); }
+  .doc-page{ min-height:150px; background:#f7f8fc; color:#12131a; border-radius:10px; padding:16px; font-size:.95rem; line-height:1.6; outline:none; box-shadow:inset 0 0 0 1px rgba(0,0,0,.1); }
+  .slide-stage{ position:relative; height:200px; border-radius:12px; overflow:hidden; display:flex; align-items:center; justify-content:center; text-align:center; padding:20px;
+    background:linear-gradient(135deg,#3b1d6e,#1e3a8a); border:1px solid var(--border); }
+  .slide-stage h3{ font-size:1.3rem; margin-bottom:8px; }
+  .slide-stage p{ color:#dbe4ff; font-size:.9rem; max-width:400px; }
+  .slide-controls{ display:flex; align-items:center; justify-content:center; gap:14px; margin-top:12px; }
+  .slide-dot{ width:8px; height:8px; border-radius:50%; background:var(--border); }
+  .slide-dot.on{ background:var(--cyan); box-shadow:0 0 8px var(--cyan); }
+  .browser-frame{ border:1px solid var(--border); border-radius:12px; overflow:hidden; background:var(--glass); }
+  .browser-bar{ display:flex; gap:8px; align-items:center; padding:10px; background:rgba(255,255,255,.04); border-bottom:1px solid var(--border); }
+  .browser-bar .dot{ width:10px; height:10px; border-radius:50%; }
+  .browser-url{ flex:1; display:flex; gap:8px; }
+  .browser-url input{ flex:1; border-radius:8px; border:1px solid var(--border); background:rgba(0,0,0,.3); color:var(--ink); padding:7px 12px; font-size:.82rem; }
+  .browser-view{ min-height:170px; padding:20px; text-align:center; }
+  .browser-view h3{ font-size:1.2rem; margin-bottom:8px; }
+  .browser-view p{ color:var(--muted); font-size:.85rem; }
+  .quick-sites{ display:flex; gap:6px; justify-content:center; flex-wrap:wrap; margin-top:10px; }
+
+  /* ---------- quiz ---------- */
+  .quiz-hud{ position:sticky; top:64px; z-index:15; display:flex; justify-content:center; margin-bottom:18px; }
+  .score-chip{ background:linear-gradient(90deg,#7dd3fc,#c084fc); color:#0a0e1a; font-weight:800; padding:8px 18px; border-radius:999px; box-shadow:0 6px 20px rgba(192,132,252,.4); font-size:.9rem; }
+  .q{ margin-bottom:16px; }
+  .q .q-text{ font-weight:700; font-size:.95rem; margin-bottom:10px; }
+  .q .q-text .num{ color:var(--cyan); font-weight:800; margin-right:6px; }
+  .opts{ display:grid; gap:8px; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); }
+  .opt{ border:1px solid var(--border); background:var(--glass-strong); color:var(--ink); padding:10px 12px; border-radius:12px; cursor:pointer; font-size:.85rem; text-align:left; transition:all .18s; }
+  .opt:hover:not(.locked){ border-color:rgba(125,211,252,.6); }
+  .opt.correct{ background:linear-gradient(90deg,rgba(52,211,153,.35),rgba(34,211,238,.25)); border-color:var(--ok); }
+  .opt.wrong{ background:rgba(255,77,109,.25); border-color:var(--danger); }
+  .opt.locked{ cursor:default; opacity:.85; }
+  .q-feedback{ margin-top:8px; font-size:.8rem; min-height:18px; }
+  .q-feedback.good{ color:var(--ok); }
+  .q-feedback.bad{ color:var(--danger); }
+  select.match-sel, select.blank-sel{ border-radius:10px; border:1px solid var(--border); background:rgba(0,0,0,.35); color:var(--ink); padding:7px 10px; font-size:.82rem; }
+  select.correct{ border-color:var(--ok); }
+  select.wrong{ border-color:var(--danger); }
+  .match-row{ display:flex; align-items:center; gap:10px; margin-bottom:10px; flex-wrap:wrap; }
+  .match-row .lhs{ flex:1 1 180px; font-weight:700; font-size:.88rem; }
+  .blank-line{ margin-bottom:12px; font-size:.9rem; line-height:1.7; }
+
+  /* ---------- word hunt ---------- */
+  .wh-wrap{ display:flex; gap:22px; flex-wrap:wrap; justify-content:center; align-items:flex-start; }
+  .wh-grid{ display:grid; gap:3px; touch-action:none; }
+  .wh-cell{ width:30px; height:30px; display:flex; align-items:center; justify-content:center; border-radius:6px;
+    background:var(--glass-strong); border:1px solid var(--border); font-weight:800; font-size:.82rem; cursor:pointer; user-select:none; transition:background .12s,transform .12s; }
+  .wh-cell.sel{ background:linear-gradient(90deg,#7dd3fc,#c084fc); color:#0a0e1a; transform:scale(1.05); }
+  .wh-cell.found{ background:linear-gradient(90deg,#34d399,#22d3ee); color:#04120b; border-color:transparent; }
+  .wh-words{ list-style:none; padding:0; margin:0; min-width:170px; }
+  .wh-words li{ padding:8px 12px; border-radius:10px; background:var(--glass); border:1px solid var(--border); margin-bottom:8px; font-weight:700; letter-spacing:1px; font-size:.85rem; }
+  .wh-words li.found{ text-decoration:line-through; color:var(--muted); background:rgba(52,211,153,.15); border-color:rgba(52,211,153,.4); }
+
+  /* ---------- recap ---------- */
+  .recap-list{ display:grid; gap:12px; }
+  .recap-item{ display:flex; gap:12px; align-items:flex-start; }
+  .recap-item .dot{ flex:0 0 auto; width:12px; height:12px; border-radius:50%; margin-top:5px; background:linear-gradient(90deg,#7dd3fc,#c084fc); box-shadow:0 0 10px rgba(125,211,252,.6); }
+  .recap-item p{ margin:0; font-size:.9rem; line-height:1.55; color:#cfd7f2; }
+
+  /* ---------- FULL PC ---------- */
+  .pc-lab{ display:grid; grid-template-columns:1.25fr .85fr; gap:18px; align-items:start; }
+  @media (max-width:820px){ .pc-lab{ grid-template-columns:1fr; } }
+  .pc-left{ display:flex; flex-direction:column; align-items:center; gap:14px; }
+  .pc-monitor{ width:100%; max-width:560px; }
+  .pc-monitor .bezel{ padding:14px; border-radius:18px; background:linear-gradient(160deg,#2a2f3a,#161a22);
+    border:1px solid var(--border); box-shadow:0 24px 50px rgba(0,0,0,.5); }
+  .pc-screen{ position:relative; height:300px; border-radius:8px; overflow:hidden; background:#0b1020; border:2px solid #000; }
+  .pc-stand{ width:22px; height:20px; background:#20242e; margin:0 auto; clip-path:polygon(25% 0,75% 0,100% 100%,0 100%); }
+  .pc-base{ width:120px; height:10px; background:#20242e; border-radius:6px; margin:0 auto; }
+
+  .pc-power-off{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px;
+    color:var(--muted); font-size:.82rem; background:radial-gradient(ellipse at 50% 40%,#10182b,#05060c); z-index:40; }
+  .pc-power-btn{ width:60px; height:60px; border-radius:50%; font-size:1.6rem; color:#7dd3fc; background:rgba(125,211,252,.1);
+    border:2px solid rgba(125,211,252,.5); cursor:pointer; box-shadow:0 0 20px rgba(125,211,252,.3); transition:all .2s; }
+  .pc-power-btn:hover{ background:rgba(125,211,252,.2); box-shadow:0 0 30px rgba(125,211,252,.6); }
+
+  .pc-desktop{ position:absolute; inset:0; background:linear-gradient(160deg,#1b2b4a,#0e1830 60%,#0a1122); }
+  .pc-desktop::before{ content:""; position:absolute; inset:0; background:radial-gradient(circle at 28% 20%,rgba(125,211,252,.12),transparent 55%); }
+  .pc-icons{ position:absolute; top:10px; left:10px; display:flex; flex-direction:column; gap:10px; }
+  .pc-icon{ width:76px; display:flex; flex-direction:column; align-items:center; gap:2px; color:#eaf0ff; font-size:.6rem; text-align:center; padding:4px; border-radius:8px; }
+  .pc-icon .gi{ font-size:1.5rem; }
+  .pc-icon.hot{ background:rgba(125,211,252,.28); outline:1px solid rgba(125,211,252,.6); }
+
+  .pc-taskbar{ position:absolute; left:0; right:0; bottom:0; height:32px; background:rgba(8,12,24,.88); backdrop-filter:blur(6px);
+    border-top:1px solid rgba(255,255,255,.1); display:flex; align-items:center; justify-content:space-between; padding:0 8px; z-index:30; }
+  .pc-start{ font-size:.7rem; font-weight:800; color:#0a0e1a; background:linear-gradient(90deg,#7dd3fc,#38bdf8); border:none; border-radius:7px; padding:5px 10px; cursor:pointer; }
+  .pc-start.hot{ box-shadow:0 0 0 2px #fff inset; }
+  .pc-clock{ font-size:.7rem; color:#cfe0ff; font-family:'Consolas',monospace; }
+
+  .pc-startmenu{ position:absolute; left:6px; bottom:36px; width:172px; background:rgba(12,18,34,.98); border:1px solid var(--border);
+    border-radius:12px; padding:8px; z-index:35; box-shadow:0 20px 40px rgba(0,0,0,.5); }
+  .pc-startmenu .smi{ display:flex; align-items:center; gap:8px; padding:8px; border-radius:8px; color:#eaf0ff; font-size:.72rem; }
+  .pc-startmenu .smi.hot{ background:rgba(125,211,252,.28); }
+
+  .pc-window{ position:absolute; width:230px; background:rgba(14,20,36,.98); border:1px solid var(--border); border-radius:10px;
+    overflow:hidden; box-shadow:0 22px 44px rgba(0,0,0,.55); z-index:20; }
+  .pc-titlebar{ display:flex; align-items:center; justify-content:space-between; padding:7px 10px;
+    background:linear-gradient(90deg,rgba(125,211,252,.25),rgba(56,189,248,.12)); font-size:.7rem; font-weight:700; color:#eaf0ff; }
+  .pc-close{ width:18px; height:18px; border-radius:5px; background:rgba(255,77,109,.8); color:#fff; display:flex; align-items:center; justify-content:center; font-size:.66rem; font-weight:800; cursor:pointer; }
+  .pc-close.hot{ background:#ff4d6d; box-shadow:0 0 8px #ff4d6d; }
+  .pc-winbody{ padding:12px; font-size:.7rem; color:#dbe4ff; min-height:64px; line-height:1.5; }
+  .pc-winbody .np{ background:#f7f8fc; color:#12131a; border-radius:6px; padding:8px; min-height:78px; font-size:.74rem; white-space:pre-wrap; word-break:break-word; }
+  .pc-winbody .np.blink::after{ content:"|"; animation:blink 1s step-start infinite; color:#12131a; }
+  .pc-sitebtn,.pc-scanbtn{ display:inline-block; margin:4px 4px 0 0; padding:5px 9px; border-radius:7px; font-size:.66rem;
+    background:rgba(125,211,252,.15); border:1px solid rgba(125,211,252,.4); color:#dff1ff; cursor:pointer; }
+  .pc-sitebtn.hot,.pc-scanbtn.hot{ background:rgba(125,211,252,.42); }
+  .pc-scanbar{ height:8px; border-radius:5px; background:rgba(255,255,255,.1); overflow:hidden; margin-top:8px; }
+  .pc-scanfill{ height:100%; width:0; background:linear-gradient(90deg,#34d399,#22d3ee); transition:width .1s; }
+
+  .pc-cursor{ position:absolute; z-index:60; pointer-events:none; filter:drop-shadow(0 1px 2px rgba(0,0,0,.6)); }
+  .pc-cursor.click{ animation:cursorPop .2s; }
+  @keyframes cursorPop{ 50%{ transform:scale(.75); } }
+
+  .pc-desk{ display:flex; gap:16px; align-items:flex-start; flex-wrap:wrap; justify-content:center; width:100%; }
+  .pc-keyboard{ --ku:22px; display:flex; flex-direction:column; gap:5px; padding:10px; border-radius:12px; overflow-x:auto;
+    background:linear-gradient(165deg,rgba(255,255,255,.06),rgba(255,255,255,.02)); border:1px solid var(--border); }
+  .pc-mousepad{ position:relative; width:150px; height:120px; border-radius:14px; flex:0 0 auto;
+    background:repeating-linear-gradient(45deg,rgba(255,255,255,.03) 0 8px,rgba(255,255,255,.05) 8px 16px); border:1px dashed var(--border); }
+  .pcmouse{ position:absolute; left:52px; top:20px; width:46px; height:72px; border-radius:24px 24px 10px 10px;
+    background:linear-gradient(165deg,#3a4150,#232833); border:1px solid var(--border); box-shadow:0 8px 16px rgba(0,0,0,.5); cursor:grab; touch-action:none; }
+  .pcmouse.grab{ cursor:grabbing; }
+  .pcmouse-btn-left,.pcmouse-btn-right{ position:absolute; top:0; width:22px; height:30px; }
+  .pcmouse-btn-left{ left:0; border-right:1px solid rgba(0,0,0,.4); border-radius:24px 0 0 0; cursor:pointer; }
+  .pcmouse-btn-right{ right:0; border-radius:0 24px 0 0; }
+  .pcmouse-btn-left.press{ background:rgba(125,211,252,.5); }
+  .pcmouse-wheel{ position:absolute; top:8px; left:50%; transform:translateX(-50%); width:5px; height:14px; border-radius:3px; background:rgba(0,0,0,.5); }
+  .pc-pad-label{ position:absolute; bottom:4px; left:0; right:0; text-align:center; font-size:.55rem; color:var(--muted); }
+
+  .pc-right{ background:#05070e; border:1px solid var(--border); border-radius:14px; overflow:hidden; display:flex; flex-direction:column; height:470px; }
+  .serial-head{ display:flex; align-items:center; justify-content:space-between; padding:10px 12px; background:rgba(125,211,252,.08);
+    border-bottom:1px solid var(--border); font-size:.8rem; font-weight:700; color:#bfe3ff; }
+  .serial-head button{ font-size:.68rem; padding:4px 10px; border-radius:7px; border:1px solid var(--border); background:var(--glass-strong); color:var(--ink); cursor:pointer; }
+  .serial-body{ flex:1; overflow-y:auto; padding:10px 12px; font-family:'Consolas',monospace; font-size:.7rem; line-height:1.5; }
+  .sl{ margin-bottom:3px; display:flex; gap:6px; align-items:baseline; }
+  .sl .ts{ color:#4a5570; flex:0 0 auto; }
+  .sl .tag{ flex:0 0 auto; font-weight:700; }
+  .sl .msg{ color:#c9d4ee; }
+  .tag-INPUT{ color:#e2e8f0; } .tag-FIRMWARE{ color:#ffb347; } .tag-DRIVER{ color:#22d3ee; }
+  .tag-OS{ color:#c084fc; } .tag-TRANSLATOR{ color:#34d399; } .tag-UTILITY{ color:#fb7185; }
+  .tag-OUTPUT{ color:#7dd3fc; } .tag-SYSTEM{ color:#94a3b8; }
+
+  @media (max-width:480px){
+    .node{ flex-basis:42%; max-width:47%; }
+    .wh-cell{ width:24px; height:24px; font-size:.72rem; }
+    .vs-wrap{ grid-template-columns:1fr; } .vs-mid{ transform:rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<header>
+  <div class="kicker">Chapter 1 · Computer Software</div>
+  <h1 class="title">💻 The Interactive Software Journey</h1>
+</header>
+
+<nav id="nav">
+  <button class="tab active" data-view="start">🏁 Start</button>
+  <button class="tab" data-view="sim">⚡ Signal Odyssey</button>
+  <button class="tab" data-view="types">🧩 The 5 System Software</button>
+  <button class="tab" data-view="apps">📱 Application Software</button>
+  <button class="tab" data-view="quiz">🧠 Quiz</button>
+  <button class="tab" data-view="hunt">🔤 Word Hunt</button>
+  <button class="tab" data-view="pc">🖥️ Full PC</button>
+  <button class="tab" data-view="recap">📋 Recap</button>
+</nav>
+
+<main>
+
+  <!-- ============ START ============ -->
+  <section class="view active" id="view-start">
+    <div class="section-head">
+      <h2>Hardware needs Software 🤝</h2>
+      <p>A computer system is made of two parts. One you can touch — one you can't. Let's meet them!</p>
+    </div>
+
+    <div class="card hero">
+      <div class="vs-wrap">
+        <div class="vs-box vs-hw">
+          <div class="big">🖱️⌨️🖥️</div>
+          <h3>Hardware</h3>
+          <p>The parts you can <b>see, touch and feel</b> — the mouse, keyboard, hard disk and monitor.</p>
+        </div>
+        <div class="vs-mid">needs ➜</div>
+        <div class="vs-box vs-sw">
+          <div class="big">📜✨</div>
+          <h3>Software</h3>
+          <p>A set of <b>instructions</b> that tells the computer what to do. Programs and apps are software at work.</p>
+        </div>
+      </div>
+      <p style="color:var(--muted); font-size:.85rem; margin-top:16px; line-height:1.6;">
+        Hardware can't work on its own! A mouse is hardware, but it can't move the pointer without software telling it how and where to go.
+        Computers only understand <span class="machine-lang">machine language — 0s and 1s</span>. Software is the <b>bridge</b> between you and the machine.
+      </p>
+    </div>
+
+    <div class="branch">
+      <div class="card" style="border-color:rgba(34,211,238,.4)">
+        <h3 style="color:var(--cyan); font-size:1.05rem;">⚙️ System Software</h3>
+        <p style="color:#c7cfe8; font-size:.84rem; line-height:1.55; margin-top:8px;">
+          Manages the computer's hardware and controls how hardware and software talk to each other. It runs the machine behind the scenes.</p>
+        <div style="margin-top:8px;">
+          <span class="pill">Operating System</span><span class="pill">Device Driver</span><span class="pill">Firmware</span>
+          <span class="pill">Utility Software</span><span class="pill">Language Translator</span>
+        </div>
+        <button class="btn primary" style="margin-top:14px;" data-goto="sim">Explore the Signal Odyssey ⚡</button>
+      </div>
+      <div class="card" style="border-color:rgba(251,113,133,.4)">
+        <h3 style="color:var(--rose); font-size:1.05rem;">📱 Application Software</h3>
+        <p style="color:#c7cfe8; font-size:.84rem; line-height:1.55; margin-top:8px;">
+          Made by programmers so <b>you</b> can do specific tasks — writing, drawing, calculating, or making presentations.</p>
+        <div style="margin-top:8px;">
+          <span class="pill">Word Processors</span><span class="pill">Presentation Software</span><span class="pill">Web Browsers</span>
+        </div>
+        <button class="btn primary" style="margin-top:14px; background:linear-gradient(90deg,#fb7185,#c084fc);" data-goto="apps">Try the App Demos 📱</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SIMULATION ============ -->
+  <section class="view" id="view-sim">
+    <div class="section-head">
+      <h2>⚡ Signal Odyssey</h2>
+      <p>Press a key or click the mouse. Watch the signal race through all 5 system software checkpoints to reach the screen.
+      Flip any switch <b>OFF</b> to see how the computer crashes without it!</p>
+    </div>
+
+    <div class="monitor-deck">
+      <div class="monitor">
+        <div class="screen" id="screen">
+          <div class="screen-content"><span id="typedText"></span><span class="cursor">_</span></div>
+          <div class="mouse-flash" id="mouseFlash">🖱️ Click received!</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-track" id="stepTrack">
+      <span class="step-pill" data-step="firmware">⚡ Firmware</span>
+      <span class="step-pill" data-step="driver">🔌 Driver</span>
+      <span class="step-pill" data-step="os">⚙️ OS</span>
+      <span class="step-pill" data-step="translator">🔡 Translator</span>
+      <span class="step-pill" data-step="utility">🧰 Utility</span>
+    </div>
+
+    <div class="circuit-core" id="circuitCore">
+      <svg class="trace-svg" id="traceSvg"></svg>
+      <div class="nodes-row" id="nodesRow">
+        <div class="node" data-node="firmware" style="--accent:#ffb347">
+          <div class="node-icon">⚡</div><div class="node-title">Firmware</div>
+          <div class="node-sub">built-in software, permanently installed on the device</div>
+          <label class="switch"><input type="checkbox" checked data-node-toggle="firmware"><span class="slider"></span></label>
+          <div class="node-status status-on">ONLINE</div><div class="badge-ok">✓ PASSED</div>
+        </div>
+        <div class="node" data-node="driver" style="--accent:#22d3ee">
+          <div class="node-icon">🔌</div><div class="node-title">Device Driver</div>
+          <div class="node-sub">the bridge between hardware and the OS</div>
+          <label class="switch"><input type="checkbox" checked data-node-toggle="driver"><span class="slider"></span></label>
+          <div class="node-status status-on">ONLINE</div><div class="badge-ok">✓ PASSED</div>
+        </div>
+        <div class="node" data-node="os" style="--accent:#c084fc">
+          <div class="node-icon">⚙️</div><div class="node-title">Operating System</div>
+          <div class="node-sub">manages hardware, software &amp; memory</div>
+          <label class="switch"><input type="checkbox" checked data-node-toggle="os"><span class="slider"></span></label>
+          <div class="node-status status-on">ONLINE</div><div class="badge-ok">✓ PASSED</div>
+        </div>
+        <div class="node" data-node="translator" style="--accent:#34d399">
+          <div class="node-icon">🔡</div><div class="node-title">Language Translator</div>
+          <div class="node-sub">turns code into machine language (0s &amp; 1s)</div>
+          <label class="switch"><input type="checkbox" checked data-node-toggle="translator"><span class="slider"></span></label>
+          <div class="node-status status-on">ONLINE</div><div class="badge-ok">✓ PASSED</div>
+        </div>
+        <div class="node" data-node="utility" style="--accent:#fb7185">
+          <div class="node-icon">🧰</div><div class="node-title">Utility Software</div>
+          <div class="node-sub">keeps the system clean, fast &amp; organised</div>
+          <label class="switch"><input type="checkbox" checked data-node-toggle="utility"><span class="slider"></span></label>
+          <div class="node-status status-on">ONLINE</div><div class="badge-ok">✓ PASSED</div>
+        </div>
+      </div>
+      <div class="packet" id="packet"></div>
+    </div>
+
+    <div class="input-deck">
+      <div class="keyboard" id="keyboard"></div>
+      <div class="mouse-wrap">
+        <div class="mouse" id="mouse">
+          <div class="mouse-btn mouse-btn-left" id="mouseLeftBtn"></div>
+          <div class="mouse-btn mouse-btn-right"></div>
+          <div class="mouse-wheel"></div>
+        </div>
+        <div class="mouse-label">left-click me</div>
+      </div>
+    </div>
+
+    <div class="console-panel" id="consolePanel">
+      <div class="led"></div>
+      <div id="consoleText">👋 Press a key or click the mouse to send a signal into the machine!</div>
+    </div>
+  </section>
+
+  <!-- ============ TYPES ============ -->
+  <section class="view" id="view-types">
+    <div class="section-head">
+      <h2>🧩 The 5 Types of System Software</h2>
+      <p>System software is the bridge between the user and the hardware. Here's what each helper really does.</p>
+    </div>
+    <div class="grid g2">
+
+      <div class="card type-card" style="--accent:#c084fc">
+        <div class="type-head"><div class="type-icon">⚙️</div>
+          <div><div class="tag">The Boss</div><h3>Operating System</h3></div></div>
+        <p>Manages all the computer's operations — it controls processes and memory, runs both hardware and software, and lets you interact with the machine. <b>A computer can't work without one!</b></p>
+        <div class="label">Examples</div>
+        <div><span class="pill">Android</span><span class="pill">iOS</span><span class="pill">Windows</span><span class="pill">Ubuntu</span><span class="pill">Linux</span></div>
+      </div>
+
+      <div class="card type-card" style="--accent:#22d3ee">
+        <div class="type-head"><div class="type-icon">🔌</div>
+          <div><div class="tag">The Translator's Manual</div><h3>Device Driver</h3></div></div>
+        <p>Manages the hardware connected to a computer and acts as a bridge between the hardware and the operating system. Without drivers, hardware can't work properly.</p>
+        <div class="label">Examples</div>
+        <div><span class="pill">BIOS Driver</span><span class="pill">USB Driver</span><span class="pill">Display Driver</span><span class="pill">Printer Driver</span><span class="pill">Sound Card Driver</span><span class="pill">ROM Driver</span></div>
+      </div>
+
+      <div class="card type-card" style="--accent:#ffb347">
+        <div class="type-head"><div class="type-icon">⚡</div>
+          <div><div class="tag">The Built-in Brain</div><h3>Firmware</h3></div></div>
+        <p>A small program <b>built into hardware</b> and permanently installed. It controls and manages the device's functions in the background. Because it's embedded in the device, it's also called <b>embedded software</b>.</p>
+        <div class="label">Found inside</div>
+        <div><span class="pill">Mobile phones</span><span class="pill">Optical drives</span><span class="pill">Scanners</span><span class="pill">Printers</span><span class="pill">Remote controllers</span></div>
+      </div>
+
+      <div class="card type-card" style="--accent:#fb7185">
+        <div class="type-head"><div class="type-icon">🧰</div>
+          <div><div class="tag">The Housekeeper</div><h3>Utility Software</h3></div></div>
+        <p>Maintains and optimises the computer's performance — keeping it running smoothly, organised, and healthy.</p>
+        <div class="label">Types &amp; examples</div>
+        <div>
+          <span class="pill">🛡️ Antivirus — Avast, McAfee, Norton</span>
+          <span class="pill">📁 File Management</span>
+          <span class="pill">🗜️ Compression — WinZip, WinRAR</span>
+          <span class="pill">🧹 Disk Cleanup — CCleaner</span>
+        </div>
+      </div>
+
+      <div class="card type-card" style="--accent:#34d399">
+        <div class="type-head"><div class="type-icon">🔡</div>
+          <div><div class="tag">The Decoder</div><h3>Language Translator</h3></div></div>
+        <p>Converts a high-level programming language into low-level machine language, because computers understand only 0s and 1s. There are three kinds:</p>
+        <div class="grid g3" style="margin-top:6px;">
+          <div class="card" style="padding:12px;"><b>🔧 Assembler</b><p style="font-size:.78rem; margin:6px 0 0;">Converts assembly language into machine language.</p></div>
+          <div class="card" style="padding:12px;"><b>📦 Compiler</b><p style="font-size:.78rem; margin:6px 0 0;">Converts the <b>entire</b> program to machine language all at once.</p></div>
+          <div class="card" style="padding:12px;"><b>🚶 Interpreter</b><p style="font-size:.78rem; margin:6px 0 0;">Translates and runs the program <b>line by line</b> — great for finding errors.</p></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ APPS ============ -->
+  <section class="view" id="view-apps">
+    <div class="section-head">
+      <h2>📱 Application Software</h2>
+      <p>Application software lets <b>you</b> do everyday tasks. Try each one — they really work!</p>
+    </div>
+
+    <div class="demo-tabs">
+      <button class="demo-tab active" data-demo="word">📝 Word Processor</button>
+      <button class="demo-tab" data-demo="slides">📊 Presentation</button>
+      <button class="demo-tab" data-demo="browser">🌐 Web Browser</button>
+    </div>
+
+    <div class="card">
+      <!-- word processor -->
+      <div class="demo-pane active" id="demo-word">
+        <p style="color:var(--muted); font-size:.84rem; margin-top:0;">Word processors create, edit, save and print documents. Type below and style your text!
+          <br><span class="pill">MS Word</span><span class="pill">Pages</span><span class="pill">OpenOffice Writer</span><span class="pill">Google Docs</span></p>
+        <div class="doc-toolbar">
+          <button data-cmd="bold" title="Bold"><b>B</b></button>
+          <button data-cmd="italic" title="Italic"><i>I</i></button>
+          <button data-cmd="underline" title="Underline"><u>U</u></button>
+          <button data-cmd="insertUnorderedList" title="List">•</button>
+        </div>
+        <div class="doc-page" id="docPage" contenteditable="true">Type your school project here… Try selecting text and clicking <b>B</b>!</div>
+      </div>
+
+      <!-- presentation -->
+      <div class="demo-pane" id="demo-slides">
+        <p style="color:var(--muted); font-size:.84rem; margin-top:0;">Presentation software builds slides with text, images, audio and video.
+          <br><span class="pill">PowerPoint</span><span class="pill">Google Slides</span><span class="pill">Apple Keynote</span></p>
+        <div class="slide-stage" id="slideStage">
+          <div><h3 id="slideTitle"></h3><p id="slideBody"></p></div>
+        </div>
+        <div class="slide-controls">
+          <button class="btn" id="slidePrev">‹ Prev</button>
+          <div id="slideDots" style="display:flex; gap:6px;"></div>
+          <button class="btn" id="slideNext">Next ›</button>
+        </div>
+      </div>
+
+      <!-- browser -->
+      <div class="demo-pane" id="demo-browser">
+        <p style="color:var(--muted); font-size:.84rem; margin-top:0;">A web browser retrieves web pages and shows them on screen.
+          <br><span class="pill">Google Chrome</span><span class="pill">Firefox</span><span class="pill">Microsoft Edge</span></p>
+        <div class="browser-frame">
+          <div class="browser-bar">
+            <span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span>
+            <div class="browser-url">
+              <input id="urlInput" value="www.spacefacts.kid" spellcheck="false">
+              <button class="btn" id="goBtn">Go</button>
+            </div>
+          </div>
+          <div class="browser-view" id="browserView">
+            <h3>🚀 Welcome!</h3><p>Type a website address and press <b>Go</b>, or pick one below.</p>
+          </div>
+        </div>
+        <div class="quick-sites">
+          <button class="btn" data-site="www.spacefacts.kid">🪐 spacefacts.kid</button>
+          <button class="btn" data-site="www.dinozone.kid">🦕 dinozone.kid</button>
+          <button class="btn" data-site="www.artclub.kid">🎨 artclub.kid</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="view" id="view-quiz">
+    <div class="section-head">
+      <h2>🧠 Test Yourself</h2>
+      <p>Straight from the chapter — match, choose, and decide true or false. Your score updates as you go!</p>
+    </div>
+    <div class="quiz-hud"><div class="score-chip" id="scoreChip">Score: 0 / 20</div></div>
+
+    <div class="card" style="margin-bottom:18px;">
+      <h3 style="font-size:1rem; margin-bottom:12px;">🔗 Match the following</h3>
+      <div id="matchArea"></div>
+    </div>
+
+    <div class="card" style="margin-bottom:18px;">
+      <h3 style="font-size:1rem; margin-bottom:12px;">✅ Tick the correct answer</h3>
+      <div id="mcqArea"></div>
+    </div>
+
+    <div class="card" style="margin-bottom:18px;">
+      <h3 style="font-size:1rem; margin-bottom:12px;">📝 Fill in the blanks</h3>
+      <p style="color:var(--muted); font-size:.78rem; margin-top:0;">Word bank: hardware · Software · Windows · Antivirus · WinZip</p>
+      <div id="blankArea"></div>
+    </div>
+
+    <div class="card">
+      <h3 style="font-size:1rem; margin-bottom:12px;">🔵 True or False</h3>
+      <div id="tfArea"></div>
+    </div>
+  </section>
+
+  <!-- ============ WORD HUNT ============ -->
+  <section class="view" id="view-hunt">
+    <div class="section-head">
+      <h2>🔤 Activity Hub: Word Hunt</h2>
+      <p>Find all 6 hidden words! Click the <b>first</b> letter, then the <b>last</b> letter of a word. Words go across, down, or diagonally.</p>
+    </div>
+    <div class="card">
+      <div class="wh-wrap">
+        <div class="wh-grid" id="whGrid"></div>
+        <ul class="wh-words" id="whWords"></ul>
+      </div>
+      <div style="text-align:center; margin-top:16px;">
+        <button class="btn" id="whReset">🔄 New Puzzle</button>
+        <span id="whMsg" style="margin-left:12px; color:var(--muted); font-size:.85rem;"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FULL PC ============ -->
+  <section class="view" id="view-pc">
+    <div class="section-head">
+      <h2>🖥️ The Full PC — See It All Work</h2>
+      <p>A real, working desktop! <b>Drag the mouse</b> across its pad to move the pointer, press its <b>left button</b> to click, and type on the keyboard.
+      The <b>Serial Monitor</b> on the right prints exactly what the system software does for every single action.</p>
+    </div>
+    <div class="pc-lab">
+      <div class="pc-left">
+        <div class="pc-monitor">
+          <div class="bezel">
+            <div class="pc-screen" id="pcScreen">
+              <div class="pc-power-off" id="pcPowerOff">
+                <button class="pc-power-btn" id="pcPowerBtn">⏻</button>
+                <div>Click to Power On</div>
+              </div>
+              <div class="pc-desktop" id="pcDesktop" hidden>
+                <div class="pc-icons">
+                  <div class="pc-icon" data-act="open" data-arg="files"><div class="gi">🗂️</div>Files</div>
+                  <div class="pc-icon" data-act="open" data-arg="browser"><div class="gi">🌐</div>Browser</div>
+                  <div class="pc-icon" data-act="open" data-arg="notepad"><div class="gi">📝</div>Notepad</div>
+                  <div class="pc-icon" data-act="open" data-arg="antivirus"><div class="gi">🛡️</div>Antivirus</div>
+                  <div class="pc-icon" data-act="open" data-arg="bin"><div class="gi">🗑️</div>Recycle Bin</div>
+                </div>
+                <div id="pcWindows"></div>
+                <div class="pc-taskbar">
+                  <button class="pc-start" data-act="start">⊞ Start</button>
+                  <div class="pc-clock" id="pcClock">--:--</div>
+                </div>
+              </div>
+              <div class="pc-cursor" id="pcCursor" style="display:none;left:150px;top:140px;">
+                <svg width="18" height="18" viewBox="0 0 18 18"><path d="M0 0 L0 14 L4 10 L7 16 L9 15 L6 9 L12 9 Z" fill="#fff" stroke="#111" stroke-width="1"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="pc-stand"></div><div class="pc-base"></div>
+        </div>
+
+        <div class="pc-desk">
+          <div class="pc-keyboard" id="pcKeyboard"></div>
+          <div class="pc-mousepad" id="pcMousepad">
+            <div class="pcmouse" id="pcMouse">
+              <div class="pcmouse-btn-left" id="pcMouseLeft"></div>
+              <div class="pcmouse-btn-right"></div>
+              <div class="pcmouse-wheel"></div>
+            </div>
+            <div class="pc-pad-label">drag me · click left button</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pc-right">
+        <div class="serial-head"><span>🖳 Serial Monitor</span><button id="serialClear">Clear</button></div>
+        <div class="serial-body" id="serialBody">
+          <div class="sl"><span class="tag tag-SYSTEM">[SYSTEM]</span><span class="msg">Computer is powered off. Click the ⏻ power button to boot up.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RECAP ============ -->
+  <section class="view" id="view-recap">
+    <div class="section-head">
+      <h2>📋 Quick Recap</h2>
+      <p>The big ideas from Chapter 1 — all in one place.</p>
+    </div>
+    <div class="card">
+      <div class="recap-list">
+        <div class="recap-item"><div class="dot"></div><p>A computer operates with the help of <b>hardware</b>, <b>software</b>, and a <b>user</b>.</p></div>
+        <div class="recap-item"><div class="dot"></div><p>Software is a set of instructions that tells a computer what to do, and splits into two categories: <b>system software</b> and <b>application software</b>.</p></div>
+        <div class="recap-item"><div class="dot"></div><p><b>System software</b> manages the computer's hardware and controls the interaction between hardware and software.</p></div>
+        <div class="recap-item"><div class="dot"></div><p>System software includes <b>operating systems, device drivers, firmware, utility software, and language translators</b>.</p></div>
+        <div class="recap-item"><div class="dot"></div><p>Computers understand only <b>machine language (0s and 1s)</b>; translators convert human code into it.</p></div>
+        <div class="recap-item"><div class="dot"></div><p><b>Application software</b> — like word processors, presentation software, and web browsers — lets users perform specific everyday tasks.</p></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function(){
+  /* ============ NAV ============ */
+  const tabs = document.querySelectorAll('.tab');
+  function showView(name){
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById('view-'+name).classList.add('active');
+    tabs.forEach(t => t.classList.toggle('active', t.dataset.view===name));
+    window.scrollTo({top:0, behavior:'smooth'});
+    if(name==='sim') setTimeout(drawTraces, 60);
+    if(name==='hunt' && !whBuilt) buildWordHunt();
+    if(name==='pc') initPC();
+  }
+  tabs.forEach(t => t.addEventListener('click', () => showView(t.dataset.view)));
+  document.querySelectorAll('[data-goto]').forEach(b => b.addEventListener('click', () => showView(b.dataset.goto)));
+
+  /* ============ SIMULATION ============ */
+  const nodeOrder = ['firmware','driver','os','translator','utility'];
+  const nodeLabels = { firmware:'Firmware', driver:'Device Driver', os:'Operating System', translator:'Language Translator', utility:'Utility Software' };
+  const nodeMessages = {
+    firmware:{ on:"⚡ Firmware online! I'm the tiny program built right into this device's hardware — always here in the background, just like the firmware inside phones, printers, scanners and remotes.",
+      off:"💥 CRASH! Firmware is OFF. The device's own built-in program never wakes up — the hardware just sits there completely lifeless." },
+    driver:{ on:"🔌 Device Driver online! I'm the bridge between this hardware and the Operating System — telling it exactly what kind of device just sent a signal, like a USB or Display driver.",
+      off:"💥 CRASH! Driver is OFF. The signal arrived, but there's no bridge to the Operating System — the computer has no idea what device is talking to it." },
+    os:{ on:"⚙️ Operating System online! I'm in charge of the whole computer — managing hardware, software and memory. Think Windows, Android or Linux at work!",
+      off:"💥 CRASH! OS is OFF. A computer literally cannot work without an Operating System — there's no one in charge to receive this signal." },
+    translator:{ on:"🔡 Language Translator online! Computers only understand machine language — 0s and 1s. I convert everything into that, like an Assembler, Compiler or Interpreter.",
+      off:"💥 CRASH! Translator is OFF. The signal is stuck as binary gibberish — nothing gets converted into a language the screen understands." },
+    utility:{ on:"🧰 Utility Software online! I keep the computer clean and organised — like an antivirus scanning for danger or disk cleanup clearing junk — so this signal finishes smoothly.",
+      off:"💥 CRASH! Utility Software is OFF. Without maintenance tools like antivirus or disk cleanup, clutter builds up and the whole system freezes." }
+  };
+
+  const circuitCore=document.getElementById('circuitCore'), traceSvg=document.getElementById('traceSvg'),
+    packet=document.getElementById('packet'), consolePanel=document.getElementById('consolePanel'),
+    consoleText=document.getElementById('consoleText'), screenEl=document.getElementById('screen'),
+    typedTextEl=document.getElementById('typedText'), mouseFlash=document.getElementById('mouseFlash'),
+    keyboard=document.getElementById('keyboard'), mouseLeftBtn=document.getElementById('mouseLeftBtn'),
+    stepTrack=document.getElementById('stepTrack');
+  let animating=false, audioCtx=null;
+
+  function getAudioCtx(){ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+  function playTone(freq,dur,type){ try{ const c=getAudioCtx(),o=c.createOscillator(),g=c.createGain();
+    o.type=type||'sine'; o.frequency.value=freq; g.gain.setValueAtTime(.2,c.currentTime);
+    g.gain.exponentialRampToValueAtTime(.001,c.currentTime+dur); o.connect(g); g.connect(c.destination);
+    o.start(); o.stop(c.currentTime+dur);}catch(e){} }
+  const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+  const getNodeEl=n=>document.querySelector('.node[data-node="'+n+'"]');
+  const isNodeOn=n=>document.querySelector('input[data-node-toggle="'+n+'"]').checked;
+  const getStepPill=n=>stepTrack.querySelector('.step-pill[data-step="'+n+'"]');
+
+  document.querySelectorAll('input[data-node-toggle]').forEach(cb=>{
+    cb.addEventListener('change',()=>{ const n=cb.closest('.node'), s=n.querySelector('.node-status');
+      if(cb.checked){ n.classList.remove('node-off'); s.textContent='ONLINE'; s.className='node-status status-on'; }
+      else{ n.classList.add('node-off'); s.textContent='OFFLINE'; s.className='node-status status-off'; } });
+  });
+
+  function drawTraces(){
+    const b=circuitCore.getBoundingClientRect();
+    if(b.width===0) return;
+    traceSvg.setAttribute('width',b.width); traceSvg.setAttribute('height',b.height);
+    const pts=nodeOrder.map(n=>{ const r=getNodeEl(n).getBoundingClientRect();
+      return [r.left+r.width/2-b.left, r.top+r.height/2-b.top]; });
+    const entry=[pts[0][0],b.height], exit=[pts[pts.length-1][0],0];
+    const all=[entry,...pts,exit], pa=all.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ');
+    traceSvg.innerHTML='<defs><linearGradient id="tg" x1="0" y1="1" x2="0" y2="0">'+
+      '<stop offset="0%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#7dd3fc"/></linearGradient>'+
+      '<filter id="tgl" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="1.6" result="b"/>'+
+      '<feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>'+
+      '<polyline points="'+pa+'" fill="none" stroke="#334155" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>'+
+      '<polyline points="'+pa+'" fill="none" stroke="url(#tg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 8" filter="url(#tgl)" opacity="0.9">'+
+      '<animate attributeName="stroke-dashoffset" from="0" to="-24" dur="1.8s" repeatCount="indefinite"/></polyline>';
+  }
+  window.addEventListener('load',()=>setTimeout(drawTraces,120));
+  window.addEventListener('resize',()=>{ clearTimeout(window.__t); window.__t=setTimeout(drawTraces,150); });
+
+  function setPacketPos(el,animate){ const r=el.getBoundingClientRect(), x=r.left+r.width/2-8, y=r.top+r.height/2-8;
+    if(!animate){ packet.style.transition='none'; packet.style.left=x+'px'; packet.style.top=y+'px'; packet.offsetHeight; packet.style.transition=''; }
+    else{ packet.style.left=x+'px'; packet.style.top=y+'px'; } }
+  async function movePacketTo(el){ setPacketPos(el,true); await sleep(800); }
+  function toggleInputs(en){ keyboard.querySelectorAll('.key').forEach(b=>b.disabled=!en); mouseLeftBtn.classList.toggle('disabled',!en); }
+  function shakeBoard(){ circuitCore.classList.add('shake'); setTimeout(()=>circuitCore.classList.remove('shake'),550); }
+  function setConsole(t,m){ consoleText.textContent=t; consolePanel.classList.remove('error','success'); if(m) consolePanel.classList.add(m); }
+  function resetSteps(){ stepTrack.querySelectorAll('.step-pill').forEach(p=>p.classList.remove('active','done','fail')); }
+
+  async function runSequence(sourceEl,isMouse,letter){
+    if(animating) return; animating=true; toggleInputs(false); resetSteps();
+    screenEl.classList.add('screen-active');
+    setConsole('📨 '+(isMouse?'Mouse click detected!':('Key '+(letter===' '?'Space':('"'+letter+'"'))+' pressed!'))+' An electrical signal enters the machine...');
+    packet.classList.remove('packet-fail'); packet.style.opacity='1'; setPacketPos(sourceEl,false); await sleep(380);
+    for(const name of nodeOrder){
+      const nodeEl=getNodeEl(name), pill=getStepPill(name); pill.classList.add('active');
+      await movePacketTo(nodeEl); await sleep(230);
+      if(isNodeOn(name)){
+        nodeEl.classList.add('node-success'); setConsole(nodeLabels[name]+' — '+nodeMessages[name].on,'success');
+        playTone(880,.15,'sine'); await sleep(1500); nodeEl.classList.remove('node-success');
+        pill.classList.remove('active'); pill.classList.add('done');
+      } else {
+        packet.classList.add('packet-fail'); nodeEl.classList.add('node-fail');
+        pill.classList.remove('active'); pill.classList.add('fail');
+        setConsole(nodeLabels[name]+' — '+nodeMessages[name].off,'error'); playTone(110,.5,'sawtooth'); shakeBoard();
+        await sleep(1800); nodeEl.classList.remove('node-fail'); packet.style.opacity='0';
+        screenEl.classList.remove('screen-active'); animating=false; toggleInputs(true); return;
+      }
+    }
+    await movePacketTo(screenEl); packet.style.opacity='0';
+    if(isMouse){ mouseFlash.classList.add('show'); playTone(1200,.2,'sine');
+      setConsole('🎉 SUCCESS! All 5 system software helpers worked together, and the computer understood your click!','success');
+      await sleep(1600); mouseFlash.classList.remove('show');
+    } else { typedTextEl.textContent+=letter; playTone(1200,.2,'sine');
+      const shown=letter===' '?'a space':('"'+letter+'"');
+      setConsole('🎉 SUCCESS! All 5 system software helpers worked together, and '+shown+' appeared on the screen!','success'); }
+    screenEl.classList.remove('screen-active'); animating=false; toggleInputs(true);
+  }
+  // shared full-keyboard builder (used by the sim and the Full PC)
+  function k(ch){ return {l:ch,char:ch}; }
+  function sp(l,special,cls){ return {l:l,special:special,cls:cls}; }
+  const KB_ROWS=[
+    [k('`'),k('1'),k('2'),k('3'),k('4'),k('5'),k('6'),k('7'),k('8'),k('9'),k('0'),k('-'),k('='),sp('⌫','backspace','k15')],
+    [sp('Tab','mod','k15'),k('Q'),k('W'),k('E'),k('R'),k('T'),k('Y'),k('U'),k('I'),k('O'),k('P'),k('['),k(']')],
+    [sp('Caps','mod','k15'),k('A'),k('S'),k('D'),k('F'),k('G'),k('H'),k('J'),k('K'),k('L'),k(';'),k("'"),sp('Enter','mod','k18')],
+    [sp('Shift','mod','k2'),k('Z'),k('X'),k('C'),k('V'),k('B'),k('N'),k('M'),k(','),k('.'),k('/'),sp('Shift','mod','k2')],
+    [{l:'Space',char:' ',cls:'kspace'}]
+  ];
+  function buildFullKeyboard(container){
+    container.innerHTML='';
+    KB_ROWS.forEach(row=>{
+      const r=document.createElement('div'); r.className='key-row';
+      row.forEach(def=>{ const b=document.createElement('button'); b.className='key'+(def.cls?' '+def.cls:'');
+        b.textContent=def.l;
+        if(def.char!==undefined) b.dataset.char=def.char;
+        if(def.special) b.dataset.special=def.special;
+        r.appendChild(b); });
+      container.appendChild(r);
+    });
+  }
+  function simKey(b){
+    const ch=b.dataset.char, spc=b.dataset.special;
+    if(spc==='backspace'){ if(!animating){ typedTextEl.textContent=typedTextEl.textContent.slice(0,-1); setConsole('⌫ Backspace — the last character was removed from the screen.'); } return; }
+    if(spc==='mod'){ if(!animating) setConsole('You pressed '+b.textContent+'. Keys like Shift, Tab, Caps and Enter don’t print a letter — try a letter or number!'); return; }
+    if(ch!==undefined) runSequence(b,false,ch);
+  }
+  buildFullKeyboard(keyboard);
+  keyboard.querySelectorAll('.key').forEach(b=>b.addEventListener('click',()=>simKey(b)));
+  mouseLeftBtn.addEventListener('click',()=>{ if(!mouseLeftBtn.classList.contains('disabled')) runSequence(mouseLeftBtn,true,null); });
+
+  /* ============ APP DEMOS ============ */
+  document.querySelectorAll('.demo-tab').forEach(t=>t.addEventListener('click',()=>{
+    document.querySelectorAll('.demo-tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.demo-pane').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active'); document.getElementById('demo-'+t.dataset.demo).classList.add('active');
+  }));
+  document.querySelectorAll('.doc-toolbar button').forEach(b=>b.addEventListener('click',()=>{
+    document.getElementById('docPage').focus(); document.execCommand(b.dataset.cmd,false,null);
+  }));
+  // slides
+  const slides=[
+    {t:'🌟 My Solar System', b:'A presentation is a series of slides. This one has a title and text — real ones can add images, audio and video too!'},
+    {t:'🪐 Slide 2: Jupiter', b:'Jupiter is the biggest planet. Presentation software makes it easy to share information like this.'},
+    {t:'🚀 Slide 3: The End', b:'Made with software like PowerPoint, Google Slides, or Apple Keynote. Great job!'}
+  ];
+  let si=0; const slideTitle=document.getElementById('slideTitle'), slideBody=document.getElementById('slideBody'), slideDots=document.getElementById('slideDots');
+  slides.forEach((_,i)=>{ const d=document.createElement('div'); d.className='slide-dot'; slideDots.appendChild(d); });
+  function renderSlide(){ slideTitle.textContent=slides[si].t; slideBody.textContent=slides[si].b;
+    slideDots.querySelectorAll('.slide-dot').forEach((d,i)=>d.classList.toggle('on',i===si)); }
+  document.getElementById('slidePrev').addEventListener('click',()=>{ si=(si-1+slides.length)%slides.length; renderSlide(); });
+  document.getElementById('slideNext').addEventListener('click',()=>{ si=(si+1)%slides.length; renderSlide(); });
+  renderSlide();
+  // browser
+  const sites={
+    'www.spacefacts.kid':{t:'🪐 Space Facts for Kids', b:'Did you know? The Sun is so big that about 1.3 million Earths could fit inside it!'},
+    'www.dinozone.kid':{t:'🦕 Dino Zone', b:'The T-Rex had teeth as big as bananas! Roar into the world of dinosaurs.'},
+    'www.artclub.kid':{t:'🎨 Art Club', b:'Mix red and blue to make purple! Learn to draw, paint and create today.'}
+  };
+  const urlInput=document.getElementById('urlInput'), browserView=document.getElementById('browserView');
+  function visit(url){ url=(url||'').trim().toLowerCase(); const s=sites[url];
+    if(s){ browserView.innerHTML='<h3>'+s.t+'</h3><p>'+s.b+'</p>'; }
+    else{ browserView.innerHTML='<h3>🔍 Hmm…</h3><p>The browser couldn\'t find <b>'+(url||'that page')+'</b>. Try one of the sites below!</p>'; } }
+  document.getElementById('goBtn').addEventListener('click',()=>visit(urlInput.value));
+  urlInput.addEventListener('keydown',e=>{ if(e.key==='Enter') visit(urlInput.value); });
+  document.querySelectorAll('[data-site]').forEach(b=>b.addEventListener('click',()=>{ urlInput.value=b.dataset.site; visit(b.dataset.site); }));
+
+  /* ============ QUIZ ============ */
+  let score=0; const maxScore=20; const scoreChip=document.getElementById('scoreChip');
+  const awarded={};
+  function award(id){ if(!awarded[id]){ awarded[id]=true; score++; scoreChip.textContent='Score: '+score+' / '+maxScore;
+    if(score===maxScore) scoreChip.textContent='🏆 Perfect! '+score+' / '+maxScore; } }
+
+  // match
+  const matchData=[
+    {l:'1. Operating System', a:'Android'},
+    {l:'2. Utility Software', a:'Antivirus'},
+    {l:'3. Language Translator', a:'Compiler'},
+    {l:'4. Firmware', a:'Embedded software'},
+    {l:'5. Compression tool', a:'WinRAR'}
+  ];
+  const matchOptions=['Android','Antivirus','Compiler','Embedded software','WinRAR'];
+  const matchArea=document.getElementById('matchArea');
+  matchData.forEach((m,i)=>{
+    const row=document.createElement('div'); row.className='match-row';
+    const opts=matchOptions.slice().sort(()=>Math.random()-0.5);
+    row.innerHTML='<div class="lhs">'+m.l+'</div><div>➜</div>';
+    const sel=document.createElement('select'); sel.className='match-sel';
+    sel.innerHTML='<option value="">— choose —</option>'+opts.map(o=>'<option>'+o+'</option>').join('');
+    sel.addEventListener('change',()=>{ if(!sel.value) return; sel.classList.remove('correct','wrong');
+      if(sel.value===m.a){ sel.classList.add('correct'); sel.disabled=true; award('m'+i); }
+      else{ sel.classList.add('wrong'); } });
+    row.appendChild(sel); matchArea.appendChild(row);
+  });
+
+  // mcq
+  const mcqData=[
+    {q:'Which of the following is a device driver?', o:['USB Driver','Printer Driver','Both of these','MS Word'], a:2},
+    {q:'Which is a type of malicious software that enters through a host program?', o:['Virus','Antivirus','Compiler','Firmware'], a:0},
+    {q:'Which of these is a compression tool?', o:['CCleaner','WinRAR','Norton','Chrome'], a:1},
+    {q:'Which translator converts assembly language into machine language?', o:['Compiler','Assembler','Interpreter','Driver'], a:1},
+    {q:'Which of the following is a system software?', o:['Linux','MS Word','Chrome','PowerPoint'], a:0}
+  ];
+  const mcqArea=document.getElementById('mcqArea');
+  mcqData.forEach((m,i)=>{
+    const wrap=document.createElement('div'); wrap.className='q';
+    wrap.innerHTML='<div class="q-text"><span class="num">'+(i+1)+'.</span>'+m.q+'</div>';
+    const opts=document.createElement('div'); opts.className='opts';
+    m.o.forEach((o,oi)=>{ const btn=document.createElement('button'); btn.className='opt'; btn.textContent=o;
+      btn.addEventListener('click',()=>{ if(wrap.dataset.done) return;
+        if(oi===m.a){ btn.classList.add('correct'); wrap.dataset.done='1'; award('q'+i);
+          opts.querySelectorAll('.opt').forEach(x=>x.classList.add('locked')); }
+        else{ btn.classList.add('wrong','locked'); } });
+      opts.appendChild(btn); });
+    wrap.appendChild(opts); mcqArea.appendChild(wrap);
+  });
+
+  // fill blanks
+  const blankData=[
+    {pre:'1. The parts of a computer that we can touch and feel are called ', a:'hardware', post:'.'},
+    {pre:'2. ', a:'Software', post:' is a set of instructions that tells a computer what to do.'},
+    {pre:'3. ', a:'Windows', post:' is an example of system software.'},
+    {pre:'4. ', a:'Antivirus', post:' is a utility software.'},
+    {pre:'5. ', a:'WinZip', post:' is a compression tool.'}
+  ];
+  const bankWords=['hardware','Software','Windows','Antivirus','WinZip'];
+  const blankArea=document.getElementById('blankArea');
+  blankData.forEach((b,i)=>{
+    const line=document.createElement('div'); line.className='blank-line';
+    const sel=document.createElement('select'); sel.className='blank-sel';
+    sel.innerHTML='<option value="">—</option>'+bankWords.slice().sort(()=>Math.random()-0.5).map(w=>'<option>'+w+'</option>').join('');
+    sel.addEventListener('change',()=>{ if(!sel.value) return; sel.classList.remove('correct','wrong');
+      if(sel.value===b.a){ sel.classList.add('correct'); sel.disabled=true; award('b'+i); } else sel.classList.add('wrong'); });
+    line.append(document.createTextNode(b.pre)); line.appendChild(sel); line.append(document.createTextNode(b.post));
+    blankArea.appendChild(line);
+  });
+
+  // true/false
+  const tfData=[
+    {q:'Firefox is a system software.', a:false},
+    {q:'A device driver controls the operations of hardware connected to a computer.', a:true},
+    {q:'Compression tools help to increase the size of files.', a:false},
+    {q:'Word processors are used to create presentations.', a:false},
+    {q:'Microsoft Edge is a web browser.', a:true}
+  ];
+  const tfArea=document.getElementById('tfArea');
+  tfData.forEach((t,i)=>{
+    const wrap=document.createElement('div'); wrap.className='q';
+    wrap.innerHTML='<div class="q-text"><span class="num">'+(i+1)+'.</span>'+t.q+'</div>';
+    const opts=document.createElement('div'); opts.className='opts'; opts.style.gridTemplateColumns='repeat(2,1fr)'; opts.style.maxWidth='240px';
+    [['✅ True',true],['❌ False',false]].forEach(([lbl,val])=>{
+      const btn=document.createElement('button'); btn.className='opt'; btn.textContent=lbl;
+      btn.addEventListener('click',()=>{ if(wrap.dataset.done) return;
+        if(val===t.a){ btn.classList.add('correct'); award('t'+i); } else btn.classList.add('wrong');
+        wrap.dataset.done='1'; opts.querySelectorAll('.opt').forEach(x=>x.classList.add('locked')); });
+      opts.appendChild(btn); });
+    wrap.appendChild(opts); tfArea.appendChild(wrap);
+  });
+
+  /* ============ WORD HUNT ============ */
+  const whWordsList=['ANTIVIRUS','SOFTWARE','HARDWARE','ASSEMBLER','FIRMWARE','INTERPRETER'];
+  const GRID=12; let grid=[], placed={}, whBuilt=false, firstCell=null;
+  const whGrid=document.getElementById('whGrid'), whWordsUl=document.getElementById('whWords'), whMsg=document.getElementById('whMsg');
+  const DIRS=[[0,1],[1,0],[1,1],[1,-1],[0,-1],[-1,0],[-1,-1],[-1,1]];
+
+  function buildWordHunt(){
+    whBuilt=true;
+    let ok=false, attempts=0;
+    while(!ok && attempts<200){
+      attempts++;
+      grid=Array.from({length:GRID},()=>Array(GRID).fill(''));
+      placed={}; ok=true;
+      for(const w of whWordsList){
+        let done=false;
+        for(let tries=0; tries<120 && !done; tries++){
+          const dir=DIRS[Math.floor(Math.random()*4)]; // use forward dirs for placement
+          const r0=Math.floor(Math.random()*GRID), c0=Math.floor(Math.random()*GRID);
+          const rEnd=r0+dir[0]*(w.length-1), cEnd=c0+dir[1]*(w.length-1);
+          if(rEnd<0||rEnd>=GRID||cEnd<0||cEnd>=GRID) continue;
+          let fits=true;
+          for(let k=0;k<w.length;k++){ const rr=r0+dir[0]*k, cc=c0+dir[1]*k;
+            if(grid[rr][cc]!=='' && grid[rr][cc]!==w[k]){ fits=false; break; } }
+          if(!fits) continue;
+          for(let k=0;k<w.length;k++){ grid[r0+dir[0]*k][c0+dir[1]*k]=w[k]; }
+          done=true;
+        }
+        if(!done){ ok=false; break; }
+      }
+    }
+    const LET='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    for(let r=0;r<GRID;r++) for(let c=0;c<GRID;c++) if(grid[r][c]==='') grid[r][c]=LET[Math.floor(Math.random()*26)];
+
+    whGrid.style.gridTemplateColumns='repeat('+GRID+',1fr)';
+    whGrid.innerHTML=''; firstCell=null;
+    for(let r=0;r<GRID;r++) for(let c=0;c<GRID;c++){
+      const cell=document.createElement('div'); cell.className='wh-cell'; cell.textContent=grid[r][c];
+      cell.dataset.r=r; cell.dataset.c=c; cell.addEventListener('click',()=>onCellClick(cell));
+      whGrid.appendChild(cell);
+    }
+    whWordsUl.innerHTML='';
+    whWordsList.forEach(w=>{ const li=document.createElement('li'); li.textContent=w; li.dataset.word=w; whWordsUl.appendChild(li); });
+    whMsg.textContent='';
+  }
+  function cellAt(r,c){ return whGrid.querySelector('.wh-cell[data-r="'+r+'"][data-c="'+c+'"]'); }
+  function onCellClick(cell){
+    if(!firstCell){ firstCell=cell; cell.classList.add('sel'); return; }
+    if(firstCell===cell){ cell.classList.remove('sel'); firstCell=null; return; }
+    const r0=+firstCell.dataset.r, c0=+firstCell.dataset.c, r1=+cell.dataset.r, c1=+cell.dataset.c;
+    const dr=r1-r0, dc=c1-c0;
+    const straight=(dr===0||dc===0||Math.abs(dr)===Math.abs(dc));
+    let cells=[];
+    if(straight){
+      const len=Math.max(Math.abs(dr),Math.abs(dc))+1;
+      const sr=Math.sign(dr), sc=Math.sign(dc);
+      for(let k=0;k<len;k++) cells.push(cellAt(r0+sr*k,c0+sc*k));
+    }
+    firstCell.classList.remove('sel'); firstCell=null;
+    if(!straight || cells.includes(null)){ whMsg.textContent='Pick the first & last letter in a straight line!'; return; }
+    const str=cells.map(x=>x.textContent).join(''); const rev=str.split('').reverse().join('');
+    const li=[...whWordsUl.children].find(li=>!li.classList.contains('found') && (li.dataset.word===str||li.dataset.word===rev));
+    if(li){ cells.forEach(x=>x.classList.add('found')); li.classList.add('found');
+      const remaining=[...whWordsUl.children].filter(l=>!l.classList.contains('found')).length;
+      whMsg.textContent= remaining===0 ? '🎉 You found them all!' : '✅ Nice! '+remaining+' to go.';
+    } else { whMsg.textContent='❌ Not a word — try again!'; }
+  }
+  document.getElementById('whReset').addEventListener('click',buildWordHunt);
+
+  /* ============ FULL PC ============ */
+  let pcInited=false, powered=false, pcActiveText=null, startMenu=null, winOffset=0;
+  let cursorX=150, cursorY=140, lastMoveLog=0, dragging=false, dragOffX=0, dragOffY=0;
+  const openWins={};
+  let pcScreen,pcPowerOff,pcPowerBtn,pcDesktop,pcWindows,pcCursor,pcClock,pcMousepad,pcMouse,pcMouseLeft,serialBody;
+
+  const APPINFO={ files:{icon:'🗂️',title:'Files'}, browser:{icon:'🌐',title:'Web Browser'},
+    notepad:{icon:'📝',title:'Notepad'}, antivirus:{icon:'🛡️',title:'Antivirus'}, bin:{icon:'🗑️',title:'Recycle Bin'} };
+  const PCSITES={ spacefacts:{t:'🪐 Space Facts',b:'The Sun could hold 1.3 million Earths inside it!'},
+    dinozone:{t:'🦕 Dino Zone',b:'A T-Rex had teeth as big as bananas!'} };
+
+  function nowStr(){ const d=new Date(); const p=n=>String(n).padStart(2,'0'); return p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds()); }
+  function slog(tag,msg){ if(!serialBody) return; const d=document.createElement('div'); d.className='sl';
+    d.innerHTML='<span class="ts">'+nowStr()+'</span><span class="tag tag-'+tag+'">['+tag+']</span><span class="msg">'+msg+'</span>';
+    serialBody.appendChild(d); serialBody.scrollTop=serialBody.scrollHeight;
+    while(serialBody.children.length>200) serialBody.removeChild(serialBody.firstChild); }
+
+  function initPC(){
+    if(pcInited){ return; } pcInited=true;
+    pcScreen=document.getElementById('pcScreen'); pcPowerOff=document.getElementById('pcPowerOff');
+    pcPowerBtn=document.getElementById('pcPowerBtn'); pcDesktop=document.getElementById('pcDesktop');
+    pcWindows=document.getElementById('pcWindows'); pcCursor=document.getElementById('pcCursor');
+    pcClock=document.getElementById('pcClock'); pcMousepad=document.getElementById('pcMousepad');
+    pcMouse=document.getElementById('pcMouse'); pcMouseLeft=document.getElementById('pcMouseLeft');
+    serialBody=document.getElementById('serialBody');
+
+    // build the PC keyboard from the shared builder
+    const pcKeyboard=document.getElementById('pcKeyboard');
+    buildFullKeyboard(pcKeyboard);
+    pcKeyboard.querySelectorAll('.key').forEach(b=>b.addEventListener('click',()=>pcKeyPress(b)));
+
+    pcPowerBtn.addEventListener('click',powerOn);
+    document.getElementById('serialClear').addEventListener('click',()=>{ serialBody.innerHTML=''; slog('SYSTEM','Serial monitor cleared.'); });
+
+    // ---- mouse drag = pointer movement ----
+    pcMouse.addEventListener('pointerdown',e=>{
+      if(e.target.closest('.pcmouse-btn-left')) return; // left button handles clicks
+      dragging=true; pcMouse.classList.add('grab'); try{pcMouse.setPointerCapture(e.pointerId);}catch(_){}
+      const r=pcMouse.getBoundingClientRect(); dragOffX=e.clientX-r.left; dragOffY=e.clientY-r.top; e.preventDefault();
+    });
+    window.addEventListener('pointermove',e=>{
+      if(!dragging) return;
+      const pad=pcMousepad.getBoundingClientRect();
+      const maxX=pad.width-pcMouse.offsetWidth, maxY=pad.height-pcMouse.offsetHeight;
+      let x=e.clientX-pad.left-dragOffX, y=e.clientY-pad.top-dragOffY;
+      x=Math.max(0,Math.min(maxX,x)); y=Math.max(0,Math.min(maxY,y));
+      pcMouse.style.left=x+'px'; pcMouse.style.top=y+'px';
+      updateCursorFromMouse(x,y,maxX,maxY);
+    });
+    window.addEventListener('pointerup',()=>{ if(dragging){ dragging=false; pcMouse.classList.remove('grab'); } });
+
+    // ---- left click ----
+    pcMouseLeft.addEventListener('pointerdown',e=>{ e.stopPropagation(); pcMouseLeft.classList.add('press');
+      if(powered){ pcCursor.classList.add('click'); doPcClick(); } });
+    window.addEventListener('pointerup',()=>{ pcMouseLeft.classList.remove('press'); setTimeout(()=>pcCursor&&pcCursor.classList.remove('click'),180); });
+
+    // clock
+    function tick(){ if(pcClock) pcClock.textContent=nowStr().slice(0,5); }
+    tick(); setInterval(tick,1000);
+  }
+
+  function updateCursorFromMouse(x,y,maxX,maxY){
+    const sr=pcScreen.getBoundingClientRect();
+    const rx=maxX>0?x/maxX:0, ry=maxY>0?y/maxY:0;
+    cursorX=Math.max(0,Math.min(sr.width-2, rx*sr.width));
+    cursorY=Math.max(0,Math.min(sr.height-2, ry*sr.height));
+    pcCursor.style.left=cursorX+'px'; pcCursor.style.top=cursorY+'px';
+    if(powered){ const t=Date.now(); if(t-lastMoveLog>700){ lastMoveLog=t;
+      slog('DRIVER','Mouse driver → pointer moved to ('+Math.round(cursorX)+', '+Math.round(cursorY)+')'); }
+      updateHover(sr.left+cursorX, sr.top+cursorY); }
+  }
+  function updateHover(clientX,clientY){
+    const el=document.elementFromPoint(clientX,clientY);
+    const hov=el&&el.closest('[data-act]');
+    pcScreen.querySelectorAll('.hot').forEach(n=>n.classList.remove('hot'));
+    if(hov) hov.classList.add('hot');
+  }
+
+  function powerOn(){
+    powered=true; pcPowerOff.style.display='none'; pcDesktop.hidden=false; pcCursor.style.display='block';
+    slog('FIRMWARE','BIOS / Firmware: Power-On Self-Test (POST) running…');
+    slog('FIRMWARE','Firmware wakes up the hardware, then hands control to the OS');
+    slog('DRIVER','Loading device drivers: keyboard, mouse, display…');
+    slog('OS','Operating System started — the desktop is ready 🎉');
+  }
+  function shutdown(){
+    powered=false; closeStart();
+    Object.keys(openWins).forEach(k=>{ openWins[k].remove(); delete openWins[k]; });
+    pcActiveText=null; pcDesktop.hidden=true; pcPowerOff.style.display='flex'; pcCursor.style.display='none';
+    slog('SYSTEM','System shut down. Click the power button to start again.');
+  }
+
+  function doPcClick(){
+    const sr=pcScreen.getBoundingClientRect();
+    const el=document.elementFromPoint(sr.left+cursorX, sr.top+cursorY);
+    const t=el&&el.closest('[data-act]');
+    slog('INPUT','Left mouse button clicked');
+    slog('DRIVER','Mouse driver reports CLICK at ('+Math.round(cursorX)+', '+Math.round(cursorY)+')');
+    if(!t){ slog('OS','Click landed on the empty desktop — nothing to open here'); return; }
+    const act=t.dataset.act, arg=t.dataset.arg;
+    if(act==='start') toggleStart();
+    else if(act==='open'){ closeStart(); openApp(arg); }
+    else if(act==='shutdown'){ closeStart(); shutdown(); }
+    else if(act==='close') closeWindow(t.closest('.pc-window'));
+    else if(act==='site') browseTo(t.closest('.pc-window'), arg);
+    else if(act==='scan') runScan(t.closest('.pc-window'));
+  }
+
+  function openApp(app){
+    if(!powered) return;
+    if(openWins[app]){ slog('OS', APPINFO[app].title+' is already open'); return; }
+    slog('OS','Operating System launches '+APPINFO[app].title+' (application software)');
+    const w=document.createElement('div'); w.className='pc-window'; w.dataset.win=app;
+    w.style.top=(18+winOffset)+'px'; w.style.left=(70+winOffset)+'px'; winOffset=(winOffset+22)%66;
+    let body='';
+    if(app==='files') body='<div class="pc-winbody">📁 School&nbsp;&nbsp;📁 Games&nbsp;&nbsp;📁 Photos<br><br>All your saved documents and pictures live here.</div>';
+    else if(app==='browser') body='<div class="pc-winbody">Pick a website:<br>'+
+      '<span class="pc-sitebtn" data-act="site" data-arg="spacefacts">🪐 spacefacts.kid</span>'+
+      '<span class="pc-sitebtn" data-act="site" data-arg="dinozone">🦕 dinozone.kid</span>'+
+      '<div class="pc-siteview" style="margin-top:8px;">🌐 Ready — click a site above.</div></div>';
+    else if(app==='notepad') body='<div class="pc-winbody"><div class="np blink"></div>'+
+      '<div style="margin-top:6px;color:#93a3c8;font-size:.6rem;">Type on the keyboard below ↓</div></div>';
+    else if(app==='antivirus') body='<div class="pc-winbody">🛡️ Keep your PC safe &amp; fast!<br>'+
+      '<span class="pc-scanbtn" data-act="scan">▶ Run Scan</span><div class="pc-scanbar"><div class="pc-scanfill"></div></div>'+
+      '<div class="pc-scanmsg" style="margin-top:6px;"></div></div>';
+    else if(app==='bin') body='<div class="pc-winbody">🗑️ The Recycle Bin is empty.</div>';
+    w.innerHTML='<div class="pc-titlebar"><span>'+APPINFO[app].icon+' '+APPINFO[app].title+'</span>'+
+      '<span class="pc-close" data-act="close">✕</span></div>'+body;
+    pcWindows.appendChild(w); openWins[app]=w;
+    slog('OUTPUT', APPINFO[app].title+' window is now visible on the monitor');
+    if(app==='notepad'){ pcActiveText=w.querySelector('.np'); slog('OS','Notepad is focused — keyboard input will go here'); }
+  }
+  function closeWindow(w){ if(!w) return; const app=w.dataset.win; if(app==='notepad') pcActiveText=null;
+    w.remove(); delete openWins[app]; slog('OS','Closed '+APPINFO[app].title); }
+  function browseTo(w,arg){ const v=w.querySelector('.pc-siteview'), s=PCSITES[arg];
+    slog('OS','Browser asks the Operating System to open a web page');
+    slog('OUTPUT', s.t+' page displayed on screen'); v.innerHTML='<b>'+s.t+'</b><br>'+s.b; }
+  function runScan(w){ const fill=w.querySelector('.pc-scanfill'), msg=w.querySelector('.pc-scanmsg');
+    slog('UTILITY','Antivirus (utility software) starts scanning memory &amp; files…');
+    let p=0; const iv=setInterval(()=>{ p+=8; if(p>100)p=100; fill.style.width=p+'%';
+      if(p>=100){ clearInterval(iv); msg.textContent='✅ No viruses found. System is clean!';
+        slog('UTILITY','Scan complete — no threats found, system optimised'); } },110); }
+
+  function toggleStart(){ if(startMenu){ closeStart(); return; }
+    startMenu=document.createElement('div'); startMenu.className='pc-startmenu';
+    const items=[['files','🗂️ Files'],['browser','🌐 Web Browser'],['notepad','📝 Notepad'],['antivirus','🛡️ Antivirus']];
+    startMenu.innerHTML=items.map(i=>'<div class="smi" data-act="open" data-arg="'+i[0]+'">'+i[1]+'</div>').join('')+
+      '<div class="smi" data-act="shutdown">⏻ Shut Down</div>';
+    pcDesktop.appendChild(startMenu); slog('OS','Start menu opened'); }
+  function closeStart(){ if(startMenu){ startMenu.remove(); startMenu=null; } }
+
+  function pcKeyPress(b){
+    b.classList.add('press'); setTimeout(()=>b.classList.remove('press'),120);
+    if(!powered){ slog('SYSTEM','Key ignored — the computer is powered off'); return; }
+    const ch=b.dataset.char, spc=b.dataset.special;
+    if(spc==='backspace'){ if(pcActiveText){ pcActiveText.textContent=pcActiveText.textContent.slice(0,-1);
+      slog('DRIVER','Keyboard driver → Backspace'); slog('OUTPUT','Removed the last character in Notepad'); }
+      else slog('OS','Backspace ignored — no text field is open (try Notepad)'); return; }
+    if(spc==='mod'){ slog('DRIVER','Keyboard driver → modifier key ('+b.textContent+') — prints nothing'); return; }
+    if(ch!==undefined){
+      const disp=ch===' '?'Space':("'"+ch+"'");
+      if(pcActiveText){ pcActiveText.textContent+=ch;
+        slog('DRIVER','Keyboard driver decodes the key → '+disp);
+        slog('TRANSLATOR','Scan code translated into character '+disp);
+        slog('OUTPUT','Character shown in Notepad'); }
+      else slog('OS','Key '+disp+' pressed, but no text field is focused — open Notepad first'); }
+  }
+
+})();
+</script>
+</body>
+</html>
