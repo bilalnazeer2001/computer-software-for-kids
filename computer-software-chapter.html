@@ -313,6 +313,45 @@
   .recap-item .dot{ flex:0 0 auto; width:12px; height:12px; border-radius:50%; margin-top:5px; background:linear-gradient(90deg,#7dd3fc,#c084fc); box-shadow:0 0 10px rgba(125,211,252,.6); }
   .recap-item p{ margin:0; font-size:.9rem; line-height:1.55; color:#cfd7f2; }
 
+  /* ---------- HARDWARE ---------- */
+  .hw-filter{ display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:18px; }
+  .hw-chip{ border:1px solid var(--border); background:var(--glass); color:var(--muted); padding:7px 14px;
+    border-radius:999px; font-size:.78rem; font-weight:700; cursor:pointer; transition:all .2s; }
+  .hw-chip .swatch{ display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:5px; vertical-align:middle; }
+  .hw-chip:hover{ color:#dbe4ff; border-color:rgba(125,211,252,.5); }
+  .hw-chip.active{ color:#0a0e1a; background:linear-gradient(90deg,#7dd3fc,#c084fc); border-color:transparent; }
+  .hw-grid{ display:grid; gap:12px; grid-template-columns:repeat(auto-fill,minmax(122px,1fr)); }
+  .hw-card{ --a:#7dd3fc; text-align:center; padding:14px 8px 12px; border-radius:14px; cursor:pointer;
+    background:linear-gradient(165deg,rgba(255,255,255,.07),rgba(255,255,255,.02));
+    border:1px solid color-mix(in srgb,var(--a) 40%,var(--border)); transition:transform .18s,box-shadow .2s,border-color .2s; }
+  .hw-card:hover{ transform:translateY(-3px); box-shadow:0 10px 22px rgba(0,0,0,.4),0 0 16px color-mix(in srgb,var(--a) 40%,transparent); }
+  .hw-card .he{ font-size:2rem; line-height:1; }
+  .hw-card .hn{ font-weight:700; font-size:.72rem; margin-top:6px; color:#eef2ff; }
+  .hw-card .hc{ font-size:.54rem; text-transform:uppercase; letter-spacing:1px; margin-top:3px; color:var(--a); font-weight:800; }
+  .hw-card.sel{ border-color:var(--a); box-shadow:0 0 0 2px var(--a) inset, 0 0 20px color-mix(in srgb,var(--a) 45%,transparent); transform:translateY(-3px); }
+  .hw-card.hide{ display:none; }
+  .hw-detail{ --a:#7dd3fc; display:flex; gap:16px; align-items:center; margin-top:16px; padding:16px;
+    border-radius:14px; border:1px solid var(--border); background:linear-gradient(165deg,rgba(255,255,255,.05),rgba(255,255,255,.02)); }
+  .hw-detail .de{ font-size:3rem; line-height:1; flex:0 0 auto; }
+  .hw-detail .dn{ font-weight:800; font-size:1rem; color:#fff; }
+  .hw-detail .dcat{ display:inline-block; font-size:.6rem; font-weight:800; text-transform:uppercase; letter-spacing:1px;
+    padding:2px 8px; border-radius:999px; margin-left:8px; color:#0a0e1a; }
+  .hw-detail .dd{ color:#c7cfe8; font-size:.86rem; line-height:1.55; margin-top:6px; }
+
+  .hw-game{ text-align:center; }
+  .hwg-top{ display:flex; justify-content:space-between; font-size:.78rem; color:var(--muted); margin-bottom:12px; }
+  .hwg-score{ font-weight:800; color:#cdd6ff; }
+  .hwg-prompt{ display:flex; flex-direction:column; align-items:center; gap:6px; min-height:96px; justify-content:center; }
+  .hwg-prompt .pe{ font-size:3rem; line-height:1; }
+  .hwg-prompt .pn{ font-weight:800; font-size:1.05rem; }
+  .hwg-btns{ display:flex; gap:12px; justify-content:center; margin-top:14px; }
+  .hwg-btn{ min-width:120px; font-size:.95rem; }
+  .hwg-btn.good{ background:linear-gradient(90deg,rgba(52,211,153,.4),rgba(34,211,238,.3)); border-color:var(--ok); }
+  .hwg-btn.bad{ background:rgba(255,77,109,.3); border-color:var(--danger); }
+  .hwg-feedback{ margin-top:12px; min-height:22px; font-size:.88rem; font-weight:700; }
+  .hwg-feedback.good{ color:var(--ok); } .hwg-feedback.bad{ color:var(--danger); }
+  .hwg-replay{ margin-top:14px; }
+
   /* ---------- FULL PC ---------- */
   .pc-lab{ display:grid; grid-template-columns:1.25fr .85fr; gap:18px; align-items:start; }
   @media (max-width:820px){ .pc-lab{ grid-template-columns:1fr; } }
@@ -412,6 +451,7 @@
 
 <nav id="nav">
   <button class="tab active" data-view="start">🏁 Start</button>
+  <button class="tab" data-view="hardware">🧰 Hardware</button>
   <button class="tab" data-view="sim">⚡ Signal Odyssey</button>
   <button class="tab" data-view="types">🧩 The 5 System Software</button>
   <button class="tab" data-view="apps">📱 Application Software</button>
@@ -448,6 +488,7 @@
         Hardware can't work on its own! A mouse is hardware, but it can't move the pointer without software telling it how and where to go.
         Computers only understand <span class="machine-lang">machine language — 0s and 1s</span>. Software is the <b>bridge</b> between you and the machine.
       </p>
+      <button class="btn primary" style="margin-top:14px; background:linear-gradient(90deg,#ffb347,#fb7185);" data-goto="hardware">🧰 Explore the Hardware Parts</button>
     </div>
 
     <div class="branch">
@@ -469,6 +510,41 @@
           <span class="pill">Word Processors</span><span class="pill">Presentation Software</span><span class="pill">Web Browsers</span>
         </div>
         <button class="btn primary" style="margin-top:14px; background:linear-gradient(90deg,#fb7185,#c084fc);" data-goto="apps">Try the App Demos 📱</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HARDWARE ============ -->
+  <section class="view" id="view-hardware">
+    <div class="section-head">
+      <h2>🧰 Meet the Computer Hardware</h2>
+      <p>Hardware is every part of a computer you can <b>see and touch</b>. Tap any part to learn what it does — then try the sorting challenge at the bottom!</p>
+    </div>
+
+    <div class="hw-filter" id="hwFilter"></div>
+
+    <div class="card">
+      <div class="hw-grid" id="hwGrid"></div>
+      <div class="hw-detail" id="hwDetail">
+        <div class="de">👆</div>
+        <div><div class="dn">Click any part above</div><div class="dd">Its description will appear right here.</div></div>
+      </div>
+    </div>
+
+    <div class="section-head" style="margin-top:28px;">
+      <h2 style="font-size:1.2rem;">🎯 Sorting Challenge: Input or Output?</h2>
+      <p>Does the part send information <b>INTO</b> the computer (Input) or give it <b>OUT</b> to you (Output)?</p>
+    </div>
+    <div class="card">
+      <div class="hw-game" id="hwGame">
+        <div class="hwg-top"><span class="hwg-score" id="hwgScore">Score: 0 / 0</span><span class="hwg-progress" id="hwgProgress"></span></div>
+        <div class="hwg-prompt" id="hwgPrompt"></div>
+        <div class="hwg-btns">
+          <button class="btn hwg-btn" data-ans="input">⬅️ Input</button>
+          <button class="btn hwg-btn" data-ans="output">Output ➡️</button>
+        </div>
+        <div class="hwg-feedback" id="hwgFeedback"></div>
+        <button class="btn primary hwg-replay" id="hwgReplay" style="display:none;">🔄 Play Again</button>
       </div>
     </div>
   </section>
@@ -818,6 +894,7 @@
     if(name==='sim') setTimeout(drawTraces, 60);
     if(name==='hunt' && !whBuilt) buildWordHunt();
     if(name==='pc') initPC();
+    if(name==='hardware') initHardware();
   }
   tabs.forEach(t => t.addEventListener('click', () => showView(t.dataset.view)));
   document.querySelectorAll('[data-goto]').forEach(b => b.addEventListener('click', () => showView(b.dataset.goto)));
@@ -1146,6 +1223,99 @@
     } else { whMsg.textContent='❌ Not a word — try again!'; }
   }
   document.getElementById('whReset').addEventListener('click',buildWordHunt);
+
+  /* ============ HARDWARE ============ */
+  const HWCATS={
+    input:{label:'Input', color:'#22d3ee', line:'It is an INPUT device — it sends information INTO the computer.'},
+    output:{label:'Output', color:'#fb7185', line:'It is an OUTPUT device — it gives information OUT to you.'},
+    process:{label:'Processing', color:'#c084fc', line:'It is a PROCESSING part — it does the thinking work inside the computer.'},
+    storage:{label:'Storage', color:'#34d399', line:'It is a STORAGE part — it remembers and keeps your files.'}
+  };
+  const HW=[
+    {n:'Keyboard', e:'⌨️', c:'input', d:'You press its keys to type letters, numbers and commands into the computer.'},
+    {n:'Mouse', e:'🖱️', c:'input', d:'Move it to steer the pointer, and click to pick things on the screen.'},
+    {n:'Microphone', e:'🎙️', c:'input', d:'Lets the computer hear you — for recording your voice or talking online.'},
+    {n:'Webcam', e:'📷', c:'input', d:'A tiny camera that sends live video of you into the computer.'},
+    {n:'Scanner', e:'🖨️', c:'input', d:'Copies a paper photo or page into the computer as a digital picture.'},
+    {n:'Game Controller', e:'🎮', c:'input', d:'A handheld device you use to play and control video games.'},
+
+    {n:'Monitor', e:'🖥️', c:'output', d:'The screen that shows you everything the computer is doing.'},
+    {n:'Printer', e:'🖨️', c:'output', d:'Puts what is on the screen onto real paper you can hold.'},
+    {n:'Speakers', e:'🔊', c:'output', d:'Play sound out loud — music, videos and game noises.'},
+    {n:'Headphones', e:'🎧', c:'output', d:'Let you listen to sound privately, right in your ears.'},
+    {n:'Projector', e:'📽️', c:'output', d:'Throws a big picture of the screen onto a wall so everyone can see.'},
+
+    {n:'CPU (Processor)', e:'🧠', c:'process', d:'The "brain" of the computer — it does all the thinking and calculations.'},
+    {n:'Motherboard', e:'🟩', c:'process', d:'The big board that connects every part so they can talk to each other.'},
+    {n:'Graphics Card', e:'🎨', c:'process', d:'Draws the games, videos and pictures you see on the screen.'},
+    {n:'RAM (Memory)', e:'🧮', c:'process', d:'Short-term memory — it remembers what you are working on right now.'},
+
+    {n:'Hard Disk', e:'💽', c:'storage', d:'Stores your files, games and photos even after the computer is switched off.'},
+    {n:'SSD', e:'⚡', c:'storage', d:'A super-fast kind of storage with no moving parts inside.'},
+    {n:'USB Flash Drive', e:'💾', c:'storage', d:'A small stick you carry files in and plug into any computer.'},
+    {n:'CD / DVD', e:'💿', c:'storage', d:'A shiny disc that can hold music, movies or software.'}
+  ];
+  let hwInited=false;
+
+  function initHardware(){
+    if(hwInited) return; hwInited=true;
+    const hwFilter=document.getElementById('hwFilter');
+    const hwGrid=document.getElementById('hwGrid');
+    const hwDetail=document.getElementById('hwDetail');
+
+    // filter chips
+    const cats=[['all','All']].concat(Object.keys(HWCATS).map(k=>[k,HWCATS[k].label]));
+    cats.forEach((c,i)=>{ const b=document.createElement('button'); b.className='hw-chip'+(i===0?' active':''); b.dataset.filter=c[0];
+      const sw=c[0]==='all'?'':'<span class="swatch" style="background:'+HWCATS[c[0]].color+'"></span>';
+      b.innerHTML=sw+c[1]; hwFilter.appendChild(b);
+      b.addEventListener('click',()=>{ hwFilter.querySelectorAll('.hw-chip').forEach(x=>x.classList.remove('active')); b.classList.add('active');
+        const f=c[0]; hwGrid.querySelectorAll('.hw-card').forEach(card=>card.classList.toggle('hide', f!=='all' && card.dataset.cat!==f)); });
+    });
+
+    // cards
+    HW.forEach((p,idx)=>{ const col=HWCATS[p.c].color;
+      const card=document.createElement('div'); card.className='hw-card'; card.dataset.cat=p.c; card.style.setProperty('--a',col);
+      card.innerHTML='<div class="he">'+p.e+'</div><div class="hn">'+p.n+'</div><div class="hc">'+HWCATS[p.c].label+'</div>';
+      card.addEventListener('click',()=>{ hwGrid.querySelectorAll('.hw-card').forEach(x=>x.classList.remove('sel')); card.classList.add('sel');
+        hwDetail.style.setProperty('--a',col);
+        hwDetail.innerHTML='<div class="de">'+p.e+'</div><div><div class="dn">'+p.n+
+          '<span class="dcat" style="background:'+col+'">'+HWCATS[p.c].label+'</span></div>'+
+          '<div class="dd">'+p.d+' <b>'+HWCATS[p.c].line+'</b></div></div>'; });
+      hwGrid.appendChild(card);
+    });
+
+    setupHwGame();
+  }
+
+  function setupHwGame(){
+    const pool=HW.filter(p=>p.c==='input'||p.c==='output');
+    const scoreEl=document.getElementById('hwgScore'), progEl=document.getElementById('hwgProgress'),
+      promptEl=document.getElementById('hwgPrompt'), feedbackEl=document.getElementById('hwgFeedback'),
+      replayBtn=document.getElementById('hwgReplay');
+    const btns=document.querySelectorAll('.hwg-btn');
+    let order=[], idx=0, score=0, locked=false;
+
+    function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+    function start(){ order=shuffle(pool); idx=0; score=0; locked=false; replayBtn.style.display='none';
+      btns.forEach(b=>b.disabled=false); feedbackEl.textContent=''; feedbackEl.className='hwg-feedback'; render(); }
+    function render(){ const p=order[idx]; promptEl.innerHTML='<div class="pe">'+p.e+'</div><div class="pn">'+p.n+'</div>';
+      scoreEl.textContent='Score: '+score+' / '+order.length; progEl.textContent='Part '+(idx+1)+' of '+order.length; }
+    function next(){ idx++; locked=false; btns.forEach(b=>{ b.classList.remove('good','bad'); b.disabled=false; });
+      if(idx>=order.length){ finish(); } else { feedbackEl.textContent=''; feedbackEl.className='hwg-feedback'; render(); } }
+    function finish(){ promptEl.innerHTML='<div class="pe">'+(score===order.length?'🏆':'🎉')+'</div><div class="pn">All done!</div>';
+      scoreEl.textContent='Score: '+score+' / '+order.length; progEl.textContent='Finished';
+      feedbackEl.textContent = score===order.length ? 'Perfect! You sorted every part correctly!' : 'Great effort — play again to beat your score!';
+      feedbackEl.className='hwg-feedback good'; btns.forEach(b=>b.disabled=true); replayBtn.style.display='inline-block'; }
+
+    btns.forEach(b=>b.addEventListener('click',()=>{ if(locked) return; locked=true;
+      const ans=b.dataset.ans, correct=order[idx].c;
+      if(ans===correct){ b.classList.add('good'); score++; feedbackEl.textContent='✅ Correct! '+HWCATS[correct].line; feedbackEl.className='hwg-feedback good'; }
+      else{ b.classList.add('bad'); feedbackEl.textContent='❌ Oops! '+order[idx].n+' is an '+HWCATS[correct].label+' device.'; feedbackEl.className='hwg-feedback bad';
+        document.querySelector('.hwg-btn[data-ans="'+correct+'"]').classList.add('good'); }
+      btns.forEach(x=>x.disabled=true); setTimeout(next,1300); }));
+    replayBtn.addEventListener('click',start);
+    start();
+  }
 
   /* ============ FULL PC ============ */
   let pcInited=false, powered=false, pcActiveText=null, startMenu=null, winOffset=0;
