@@ -359,9 +359,17 @@
   .wh-wrap{ display:flex; gap:22px; flex-wrap:wrap; justify-content:center; align-items:flex-start; }
   .wh-grid{ display:grid; gap:3px; touch-action:none; }
   .wh-cell{ width:30px; height:30px; display:flex; align-items:center; justify-content:center; border-radius:6px;
-    background:var(--glass-strong); border:1px solid var(--border); font-weight:800; font-size:.82rem; cursor:pointer; user-select:none; transition:background .12s,transform .12s; }
-  .wh-cell.sel{ background:var(--accent); color:#fff; transform:scale(1.05); }
+    background:var(--glass-strong); border:1px solid var(--hairline); font-weight:700; font-size:.82rem; cursor:pointer;
+    user-select:none; -webkit-user-select:none; touch-action:none;
+    transition:background .12s,transform .12s,border-color .12s,box-shadow .12s; }
+  .wh-cell:hover{ border-color:var(--accent); color:var(--accent); transform:scale(1.08); }
+  .wh-cell.path{ background:var(--accent-soft); border-color:var(--accent); color:var(--accent); }
+  .wh-cell.sel{ background:var(--accent); color:#fff; border-color:transparent; transform:scale(1.12);
+    box-shadow:0 0 12px var(--accent-soft); }
+  .wh-cell.bad{ background:var(--danger); color:#fff; border-color:transparent; animation:whShake .4s; }
+  @keyframes whShake{ 20%,60%{ transform:translateX(-3px); } 40%,80%{ transform:translateX(3px); } }
   .wh-cell.found{ background:var(--ok); color:#fff; border-color:transparent; }
+  .wh-cell.found:hover{ color:#fff; transform:none; }
   .wh-words{ list-style:none; padding:0; margin:0; min-width:170px; }
   .wh-words li{ padding:8px 12px; border-radius:10px; background:var(--glass); border:1px solid var(--border); margin-bottom:8px; font-weight:700; letter-spacing:1px; font-size:.85rem; }
   .wh-words li.found{ text-decoration:line-through; color:var(--muted); background:rgba(52,211,153,.15); border-color:rgba(52,211,153,.4); }
@@ -876,7 +884,7 @@
   <section class="view" id="view-hunt">
     <div class="section-head">
       <h2>🔤 Activity Hub: Word Hunt</h2>
-      <p>Find all 6 hidden words! Click the <b>first</b> letter, then the <b>last</b> letter of a word. Words go across, down, or diagonally.</p>
+      <p>Find all 6 hidden words! <b>Press and drag</b> from the first letter to the last — or tap the first letter, then the last. Words go across, down, or diagonally.</p>
     </div>
     <div class="card">
       <div class="wh-wrap">
@@ -1286,7 +1294,7 @@
 
   /* ============ WORD HUNT ============ */
   const whWordsList=['ANTIVIRUS','SOFTWARE','HARDWARE','ASSEMBLER','FIRMWARE','INTERPRETER'];
-  const GRID=12; let grid=[], placed={}, whBuilt=false, firstCell=null;
+  const GRID=12; let grid=[], placed={}, whBuilt=false, whAnchor=null;
   const whGrid=document.getElementById('whGrid'), whWordsUl=document.getElementById('whWords'), whMsg=document.getElementById('whMsg');
   const DIRS=[[0,1],[1,0],[1,1],[1,-1],[0,-1],[-1,0],[-1,-1],[-1,1]];
 
@@ -1318,38 +1326,84 @@
     for(let r=0;r<GRID;r++) for(let c=0;c<GRID;c++) if(grid[r][c]==='') grid[r][c]=LET[Math.floor(Math.random()*26)];
 
     whGrid.style.gridTemplateColumns='repeat('+GRID+',1fr)';
-    whGrid.innerHTML=''; firstCell=null;
+    whGrid.innerHTML=''; whAnchor=null; whDragging=false;
     for(let r=0;r<GRID;r++) for(let c=0;c<GRID;c++){
       const cell=document.createElement('div'); cell.className='wh-cell'; cell.textContent=grid[r][c];
-      cell.dataset.r=r; cell.dataset.c=c; cell.addEventListener('click',()=>onCellClick(cell));
+      cell.dataset.r=r; cell.dataset.c=c;
       whGrid.appendChild(cell);
     }
     whWordsUl.innerHTML='';
     whWordsList.forEach(w=>{ const li=document.createElement('li'); li.textContent=w; li.dataset.word=w; whWordsUl.appendChild(li); });
-    whMsg.textContent='';
+    whMsg.textContent='👆 Press a letter and drag to the last letter — or tap the first, then the last.';
   }
   function cellAt(r,c){ return whGrid.querySelector('.wh-cell[data-r="'+r+'"][data-c="'+c+'"]'); }
-  function onCellClick(cell){
-    if(!firstCell){ firstCell=cell; cell.classList.add('sel'); return; }
-    if(firstCell===cell){ cell.classList.remove('sel'); firstCell=null; return; }
-    const r0=+firstCell.dataset.r, c0=+firstCell.dataset.c, r1=+cell.dataset.r, c1=+cell.dataset.c;
+  function lineCells(a,b){
+    const r0=+a.dataset.r, c0=+a.dataset.c, r1=+b.dataset.r, c1=+b.dataset.c;
     const dr=r1-r0, dc=c1-c0;
-    const straight=(dr===0||dc===0||Math.abs(dr)===Math.abs(dc));
-    let cells=[];
-    if(straight){
-      const len=Math.max(Math.abs(dr),Math.abs(dc))+1;
-      const sr=Math.sign(dr), sc=Math.sign(dc);
-      for(let k=0;k<len;k++) cells.push(cellAt(r0+sr*k,c0+sc*k));
-    }
-    firstCell.classList.remove('sel'); firstCell=null;
-    if(!straight || cells.includes(null)){ whMsg.textContent='Pick the first & last letter in a straight line!'; return; }
+    if(!(dr===0||dc===0||Math.abs(dr)===Math.abs(dc))) return null;
+    const len=Math.max(Math.abs(dr),Math.abs(dc))+1, sr=Math.sign(dr), sc=Math.sign(dc);
+    const cells=[]; for(let k=0;k<len;k++){ const el=cellAt(r0+sr*k,c0+sc*k); if(!el) return null; cells.push(el); }
+    return cells;
+  }
+  function clearMarks(cls){ whGrid.querySelectorAll('.wh-cell.'+cls).forEach(x=>x.classList.remove(cls)); }
+  function previewPath(target){
+    clearMarks('path');
+    if(!whAnchor||!target||target===whAnchor) return;
+    const cells=lineCells(whAnchor,target);
+    if(cells) cells.forEach(x=>{ if(x!==whAnchor) x.classList.add('path'); });
+  }
+  function commitSelection(target){
+    const anchor=whAnchor; whAnchor=null;
+    clearMarks('path'); clearMarks('sel');
+    if(!anchor||!target) return;
+    if(target===anchor){ return; } // single-cell release: handled by tap logic
+    const cells=lineCells(anchor,target);
+    if(!cells){ whMsg.textContent='↔️ Keep it in a straight line — across, down, or diagonal!'; return; }
     const str=cells.map(x=>x.textContent).join(''); const rev=str.split('').reverse().join('');
     const li=[...whWordsUl.children].find(li=>!li.classList.contains('found') && (li.dataset.word===str||li.dataset.word===rev));
     if(li){ cells.forEach(x=>x.classList.add('found')); li.classList.add('found');
       const remaining=[...whWordsUl.children].filter(l=>!l.classList.contains('found')).length;
       whMsg.textContent= remaining===0 ? '🎉 You found them all!' : '✅ Nice! '+remaining+' to go.';
-    } else { whMsg.textContent='❌ Not a word — try again!'; }
+    } else {
+      cells.forEach(x=>x.classList.add('bad'));
+      setTimeout(()=>clearMarks('bad'),450);
+      whMsg.textContent='❌ "'+str+'" isn’t on the list — try again!';
+    }
   }
+  function cellFromPoint(x,y){ const el=document.elementFromPoint(x,y); return el && el.closest('.wh-cell'); }
+  let whDragging=false, whMoved=false;
+  whGrid.addEventListener('pointerdown',e=>{
+    const cell=cellFromPoint(e.clientX,e.clientY); if(!cell) return;
+    e.preventDefault();
+    if(whAnchor && !whDragging){ // second tap of tap-tap mode
+      const target=cell; commitSelection(target); return;
+    }
+    whDragging=true; whMoved=false; whAnchor=cell; cell.classList.add('sel');
+    try{ whGrid.setPointerCapture(e.pointerId); }catch(_){}
+  });
+  whGrid.addEventListener('pointermove',e=>{
+    if(whDragging){ const cell=cellFromPoint(e.clientX,e.clientY);
+      if(cell && cell!==whAnchor) whMoved=true;
+      previewPath(cell); }
+    else if(whAnchor){ previewPath(cellFromPoint(e.clientX,e.clientY)); } // hover preview in tap-tap mode
+  });
+  whGrid.addEventListener('pointerup',e=>{
+    if(!whDragging) return;
+    whDragging=false;
+    const cell=cellFromPoint(e.clientX,e.clientY);
+    if(!whMoved && (cell===whAnchor||!cell)){ // it was a tap → stay armed, wait for second tap
+      whMsg.textContent='…now tap the LAST letter of the word (tap the same letter to cancel).';
+      const anchor=whAnchor;
+      // tapping the same cell again cancels
+      const cancel=ev=>{ const c2=cellFromPoint(ev.clientX,ev.clientY);
+        if(c2===anchor){ clearMarks('sel'); clearMarks('path'); whAnchor=null; whMsg.textContent='Selection cleared.'; ev.stopPropagation(); ev.preventDefault(); }
+        whGrid.removeEventListener('pointerdown',cancel,true); };
+      whGrid.addEventListener('pointerdown',cancel,true);
+      return;
+    }
+    commitSelection(cell);
+  });
+  whGrid.addEventListener('pointercancel',()=>{ whDragging=false; whAnchor=null; clearMarks('sel'); clearMarks('path'); });
   document.getElementById('whReset').addEventListener('click',buildWordHunt);
 
   /* ============ HARDWARE ============ */
